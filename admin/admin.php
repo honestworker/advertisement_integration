@@ -137,11 +137,27 @@ function wpadintgr_admin_enqueue_scripts( $hook_suffix ) {
 		return;
 	}
 
-	wp_enqueue_style( 'adintgr-form-admin', wpadintgr_plugin_url( 'admin/css/styles.css' ), array(), WPADINTGR_VERSION, 'all' );
+	wp_enqueue_style( 'adintgr-form-admin', wpadintgr_plugin_url( 'admin/css/style.css' ), array(), WPADINTGR_VERSION, 'all' );
 
 	if ( wpadintgr_is_rtl() ) {
 		wp_enqueue_style( 'adintgr-form-admin-rtl', wpadintgr_plugin_url( 'admin/css/styles-rtl.css' ), array(), WPADINTGR_VERSION, 'all' );
 	}
+
+	wp_enqueue_script( 'wpadintgr-admin-blockui', wpadintgr_plugin_url( 'admin/js/jquery.blockUI.js' ), array( 'jquery' ), WPADINTGR_VERSION, true );
+	wp_enqueue_script( 'wpadintgr-admin-tiptip', wpadintgr_plugin_url( 'admin/js/jquery.tipTip.js' ), array( 'jquery' ), WPADINTGR_VERSION, true );
+	wp_enqueue_script( 'wpadintgr-admin-meta-box', wpadintgr_plugin_url( 'admin/js/meta-box.js' ), array( 'jquery' ), WPADINTGR_VERSION, true );
+	wp_enqueue_script( 'wpadintgr-admin-selector', wpadintgr_plugin_url( 'admin/js/box-selector.js' ), array( 'jquery' ), WPADINTGR_VERSION, true );
+
+	$params = array(
+		'ajax_url'                            		=> admin_url( 'admin-ajax.php' ),
+		'i18n_remove_selector'                      => esc_js( __( 'Are you sure you want to remove this selector?', 'adintgr-form' ) ),
+		'i18n_selector_count_single'				=> esc_js( __( '%qty% selector', 'adintgr-form' ) ),
+		'i18n_selector_count_plural'				=> esc_js( __( '%qty% selectors', 'adintgr-form' ) ),
+		'selectors_per_page'                 		=> absint( apply_filters( 'adintgrform_admin_meta_boxes_selectors_per_page', 5 ) ),
+	);
+
+	wp_localize_script( 'wpadintgr-admin-meta-box', 'adintgrform_admin_meta_boxes_selectors', $params );
+
 }
 
 function wpadintgr_admin_management_page() {

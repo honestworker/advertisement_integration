@@ -95,17 +95,17 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 
 	$properties = $form->get_properties();
 
-	$loop = count($args['selectors']);
+	$loop = count($args['selector_name']);
 	$properties['selectors'] = [];
 	for ($i = 0; $i < $loop; $i++) {
 		$properties['selectors'][] = array(
-			'check' => isset($args['check'][$i]) ? $args['check'][$i] : "",
+			'selector_check' => isset($args['selector_check'][$i]) ? $args['selector_check'][$i] : "",
 
-			'name' => isset($args['name'][$i]) ? $args['name'][$i] : "",
-			'slug' => isset($args['slug'][$i]) ? $args['slug'][$i] : "",
-			'url' => isset($args['url'][$i]) ? $args['url'][$i] : "",
+			'selector_name' => isset($args['selector_name'][$i]) ? $args['selector_name'][$i] : "",
+			'selector_slug' => isset($args['selector_slug'][$i]) ? $args['selector_slug'][$i] : "",
+			'selector_url' => isset($args['selector_url'][$i]) ? $args['selector_url'][$i] : "",
 
-			'type' => isset($args['type'][$i]) ? $args['type'][$i] : "",
+			'selector_type' => isset($args['selector_type'][$i]) ? $args['selector_type'][$i] : "",
 
 			'media_comment' => isset($args['media_comment'][$i]) ? $args['media_comment'][$i] : "",
 			'media_type' => isset($args['media_type'][$i]) ? $args['media_type'][$i] : "",
@@ -114,7 +114,6 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'media_sub1' => isset($args['media_sub1'][$i]) ? $args['media_sub1'][$i] : "",
 			'media_sub2' => isset($args['media_sub2'][$i]) ? $args['media_sub2'][$i] : "",
 			'media_sub3' => isset($args['media_sub3'][$i]) ? $args['media_sub3'][$i] : "",
-			'media_target' => isset($args['media_target'][$i]) ? $args['media_target'][$i] : "",
 		);
 	}
 

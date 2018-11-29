@@ -73,6 +73,32 @@ function wpadintgr_format_atts( $atts ) {
 	return $html;
 }
 
+function wpadintgr_enctype_value( $enctype ) {
+	$enctype = trim( $enctype );
+
+	if ( empty( $enctype ) ) {
+		return '';
+	}
+
+	$valid_enctypes = array(
+		'application/x-www-form-urlencoded',
+		'multipart/form-data',
+		'text/plain',
+	);
+
+	if ( in_array( $enctype, $valid_enctypes ) ) {
+		return $enctype;
+	}
+
+	$pattern = '%^enctype="(' . implode( '|', $valid_enctypes ) . ')"$%';
+
+	if ( preg_match( $pattern, $enctype, $matches ) ) {
+		return $matches[1]; // for back-compat
+	}
+
+	return '';
+}
+
 function wpadintgr_array_flatten( $input ) {
 	if ( ! is_array( $input ) ) {
 		return array( $input );

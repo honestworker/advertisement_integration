@@ -11,6 +11,7 @@ class WPAdIntgr_Form {
 	private $name;
 	private $title;
 	private $locale;
+	private $page_id;
 	private $unit_tag;
     private $properties = array();
     
@@ -122,6 +123,7 @@ class WPAdIntgr_Form {
 			$this->name = $post->post_name;
 			$this->title = $post->post_title;
 			$this->locale = get_post_meta( $post->ID, '_locale', true );
+			$this->page_id = get_post_meta( $post->ID, '_page_id', true );
 			
 			$properties = $this->get_properties();
 			
@@ -173,7 +175,7 @@ class WPAdIntgr_Form {
 		$properties = (array) $this->properties;
 
 		$properties = wp_parse_args( $properties, array(
-			'selections' => array(),
+			'selectors' => array(),
 		));
 		
 		$properties = (array) apply_filters( 'wpadintgr_form_properties', $properties, $this );
@@ -210,6 +212,14 @@ class WPAdIntgr_Form {
 		}
 		
 		$this->title = $title;
+	}
+
+	public function page_id() {
+		return $this->page_id;
+	}
+
+	public function set_page_id($page_id) {
+		$this->page_id = $page_id;
 	}
 
 	public function locale() {
@@ -285,15 +295,12 @@ class WPAdIntgr_Form {
 		$enctype = apply_filters( 'wpadintgr_form_enctype', '' );
 		$autocomplete = apply_filters( 'wpadintgr_form_autocomplete', '' );
 		
-		$novalidate = apply_filters( 'wpadintgr_form_novalidate', wpadintgr_support_html5() );
-			
 		$atts = array(
 			'action' => esc_url( $url ),
 			'method' => 'post',
 			'class' => $class,
 			'enctype' => wpadintgr_enctype_value( $enctype ),
 			'autocomplete' => $autocomplete,
-			'novalidate' => $novalidate ? 'novalidate' : '',
 		);
 		
 		if ( '' !== $id_attr ) {
@@ -307,7 +314,7 @@ class WPAdIntgr_Form {
 		$atts = wpadintgr_format_atts( $atts );		
 		$html .= sprintf( '<form %s>', $atts ) . "\n";
 		$html .= $this->form_hidden_fields();
-		$html .= $this->form_elements();		
+		//$html .= $this->form_elements();		
 		$html .= '</form>';
 		$html .= '</div>';
 		
@@ -319,6 +326,7 @@ class WPAdIntgr_Form {
 			'_wpadintgr' => $this->id(),
 			'_wpadintgr_version' => WPADINTGR_VERSION,
 			'_wpadintgr_locale' => $this->locale(),
+			'_wpadintgr_page_id' => $this->page_id(),
 			'_wpadintgr_unit_tag' => $this->unit_tag,
 			'_wpadintgr_container_post' => 0,
 		);
@@ -343,6 +351,14 @@ class WPAdIntgr_Form {
 		return '<div style="display: none;">' . "\n" . $content . '</div>' . "\n";
     }
     
+	public function nonce_is_active() {
+		$is_active = WPADINTGR_VERIFY_NONCE;
+
+		$is_active = true;
+
+		return (bool) apply_filters( 'wpadintgr_verify_nonce', $is_active, $this );
+	}
+
 	/* Save */
 	public function save() {
 		$props = $this->get_properties();
@@ -355,9 +371,9 @@ class WPAdIntgr_Form {
 				'post_title' => $this->title,
 				'post_content' => trim( $post_content ),
 			));
-			$page_post_id = wp_insert_post( array(
-				'post_parent' => $post_id,
+			$this->page_id = wp_insert_post( array(
 				'post_type' => 'page',
+				'post_name' => 'adintgr_' . $post_id,
 				'post_status' => 'publish',
 				'post_title' => $this->title,
 				'post_content' => '',
@@ -369,13 +385,10 @@ class WPAdIntgr_Form {
 				'post_title' => $this->title,
 				'post_content' => trim( $post_content ),
             ));
-            $args = array(
-                'post_type' => 'page',
-                'parent_id' => $post_id
-            );
-            $page = get_post( $id );
+            $page = get_post( $this->page_id );
 			$page_post_id = wp_update_post( array(
-				'ID' => (int) $page->ID,
+				'post_type' => 'page',
+				'post_name' => 'adintgr_' . $post_id,
 				'post_status' => 'publish',
 				'post_title' => $this->title,
 				'post_content' => '',
@@ -390,6 +403,8 @@ class WPAdIntgr_Form {
 			if ( wpadintgr_is_valid_locale( $this->locale ) ) {
 				update_post_meta( $post_id, '_locale', $this->locale );
 			}
+
+			update_post_meta( $post_id, '_page_id', $this->page_id );
 
 			if ( $this->initial() ) {
 				$this->id = $post_id;
