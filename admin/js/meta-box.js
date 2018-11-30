@@ -4,9 +4,9 @@ jQuery( function ( $ ) {
 		var code = event.keyCode || event.which;
 
 		// Tab key
-		if ( code === '9' && $( '#adintgrform-coupon-description' ).length > 0 ) {
+		if ( code === '9' && $( '#adintgr-coupon-description' ).length > 0 ) {
 			event.stopPropagation();
-			$( '#adintgrform-coupon-description' ).focus();
+			$( '#adintgr-coupon-description' ).focus();
 			return false;
 		}
 	});

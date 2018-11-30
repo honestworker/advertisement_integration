@@ -171,7 +171,7 @@ class WPAdIntgr_Form {
 		} elseif ( $prop = $this->prop( $name ) ) {
 			if ( WP_DEBUG ) {
 				trigger_error( sprintf( $message, $name, 'prop(\'' . $name . '\')' ) );
-			}			
+			}
 			return $prop;
 		}
     }
@@ -190,6 +190,8 @@ class WPAdIntgr_Form {
 
 		$properties = wp_parse_args( $properties, array(
 			'selectors' => array(),
+			'custom_code' => '',
+			'custom_color' => '#000',
 		));
 		
 		$properties = (array) apply_filters( 'wpadintgr_form_properties', $properties, $this );
@@ -265,6 +267,10 @@ class WPAdIntgr_Form {
 		$elements = "<p>";
 		$elements .= "<span id=\"adintgr-checked\" class=\"wpadintgr-form-control-wrap checkboxes\">";
 		$elements .= "<span class=\"wpadintgr-form-control wpadintgr-radio checkboxes\">";
+		$custom_color = $this->prop( 'custom_color' );
+		if ( $custom_color == '' ) {
+			$custom_color = '#000';
+		}
 		$selectors = $this->prop( 'selectors' );
 		$selector_count = count($selectors);
 		for ($i = 0; $i < $selector_count; $i++) {
@@ -284,7 +290,7 @@ class WPAdIntgr_Form {
 			$valid_zipcode = -1;
 			if ( $selectors[$i]['selector_type'] != '' ) {
 				$valid_zipcode = 0;
-				if ( $selectors[$i]['selector_type'] == 'leave' && $selectors[$i]['leave_type'] == 'mediaalpha' ) {
+				if ( $selectors[$i]['selector_type'] == 'leave' && $selectors[$i]['leave_type'] != '' ) {
 					$valid_zipcode = 1;
 				}
 			}
@@ -301,8 +307,14 @@ class WPAdIntgr_Form {
 		$elements .= "<input type=\"submit\" value=\"GO>\" class=\"wpadintgr-form-control wpadintgr-submit submit\">";
 		
 		$elements .= "</p>";
+		$elements .= "<style type=\"text/css\">";
+		$elements .= ".checkboxes > span > span.wpadintgr-list-item { color: " . $custom_color . ";}\n";
+		$elements .= ".checkboxes > span > span.wpadintgr-list-item input[type=\"radio\"] { border: 2px solid " . $custom_color . ";}\n";
+		$elements .= ".checkboxes > span > span.wpadintgr-list-item input:checked:before { color: " . $custom_color . ";}";
+		$elements .= "</style>";
 		
 		add_action( 'wp_footer', array( $this, 'include_exit_code' ) );
+		add_action( 'wp_footer', array( $this, 'include_custom_code' ) );
 		
 		return $elements;
 	}
@@ -315,45 +327,70 @@ class WPAdIntgr_Form {
         jQuery( function( $ ) {
             document.body.addEventListener('mouseleave', function(e) {
             if (e.pageY - document.body.scrollTop < 0) {
-				if ( typeof localStorage.getItem("exitpopup_time") != 'undefined' ) {
-					var nowDate = new Date();
-					var nowTime = nowDate.getTime();
-					if ( nowTime - localStorage.getItem("exitpopup_time") < 24 * 60 * 60 * 100 ) {
-						//return;
-					} else {
-						localStorage.setItem("exitpopup_time", nowTime);
-					}
-				}
                 var check_index;
 				$( '.adintgr_selector' ).each( function ( index, el ) {
                     if ( $( this ).prop('checked') ) {
                         check_index = $ ( this ).val();
                     }
 				});
+				var nowDate = new Date();
+				var nowTime = nowDate.getTime();
+				if ( typeof localStorage.getItem("exitpopup_time" + check_index) != 'undefined' ) {
 		<?php
 			for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
 				if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
-					if ( $selectors[$selector_index]['exit_type'] == '' ) {
+					$exit_period = 1000 * 60;
+					if ( $selectors[$selector_index]['main_exit_period'] == 'minute' ) {
+						$exit_period = $exit_period;
+					} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute10' ) {
+						$exit_period = $exit_period * 10;
+					} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute30' ) {
+						$exit_period = $exit_period * 30;
+					} else if ( $selectors[$selector_index]['main_exit_period'] == 'hour' ) {
+						$exit_period = $exit_period * 60;
+					} else if ( $selectors[$selector_index]['main_exit_period'] == 'day' ) {
+						$exit_period = $exit_period * 60 * 24;
+					} else if ( $selectors[$selector_index]['main_exit_period'] == 'week' ) {
+						$exit_period = $exit_period * 60 * 24 * 7;
+					} else {
+						$exit_period = $exit_period * 60 * 24;
+					}
+		?>
+					if ( nowTime - localStorage.getItem("exitpopup_time" + check_index) < <?php echo $exit_period;?> ) {
+						return;
+					} else {
+						localStorage.setItem("exitpopup_time" + check_index, nowTime);
+					}
+		<?php
+					if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
 		?>
 				if (check_index == <?php echo $selector_index; ?>) {
-					window.open('<?php echo $selectors[$selector_index]['exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
 				}
 		<?php
-					} else if ($selectors[$selector_index]['exit_type'] == 'mediaalpha') {
+					} else {
 		?>
 				if (check_index == <?php echo $selector_index; ?>) {
 					window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
 				}
 		<?php
 					}
-
 				}
 			}
-		?>  }
+		?>
+			} else {
+				localStorage.setItem("exitpopup_time" + check_index, nowTime);
+			} 
+		}
 		});
 		});
 		</script>
 		<?php
+    }
+	
+    public function include_custom_code() {
+		$custom_code = $this->prop( 'custom_code' );
+		echo $custom_code;
     }
 	
 	/* Generating Form HTML */
@@ -487,8 +524,8 @@ class WPAdIntgr_Form {
 							'post_type' => 'page',
 							'post_name' => $this->get_unit_page(),
 							'post_status' => 'publish',
-							'post_title' =>  $props['selectors'][$index]['selector_title'],
-							'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+							'post_title' =>  $props['selectors'][$index]['selector_name'],
+							'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_name'] . "\" index=\"". $index ."\"]",
 						));
 					}
 				}
@@ -508,16 +545,16 @@ class WPAdIntgr_Form {
 								'post_type' => 'page',
 								'post_name' => $this->get_unit_page(),
 								'post_status' => 'publish',
-								'post_title' =>  $props['selectors'][$index]['selector_title'],
-								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+								'post_title' =>  $props['selectors'][$index]['selector_name'],
+								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_name'] . "\" index=\"". $index ."\"]",
 							));
 						} else {
 							wp_update_post( array(
 								'ID' => (int) $this->pages_id[$index],
 								'post_type' => 'page',
 								'post_status' => 'publish',
-								'post_title' =>  $props['selectors'][$index]['selector_title'],
-								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+								'post_title' =>  $props['selectors'][$index]['selector_name'],
+								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_name'] . "\" index=\"". $index ."\"]",
 							));
 						}
 					}
@@ -565,6 +602,12 @@ class WPAdIntgr_Form {
 			return;
 		}
 		
+		if ( is_array( $this->pages_id ) ) {
+			foreach ( $this->pages_id as $page_id ) {
+				wp_delete_post( $page_id, true );
+			}
+			$this->pages_id = [];
+		}
 		if ( wp_delete_post( $this->id, true ) ) {
 			$this->id = 0;
 			return true;

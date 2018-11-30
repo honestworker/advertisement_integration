@@ -152,10 +152,10 @@ function wpadintgr_admin_enqueue_scripts( $hook_suffix ) {
 		'i18n_remove_selector'                      => esc_js( __( 'Are you sure you want to remove this selector?', 'adintgr-form' ) ),
 		'i18n_selector_count_single'				=> esc_js( __( '%qty% selector', 'adintgr-form' ) ),
 		'i18n_selector_count_plural'				=> esc_js( __( '%qty% selectors', 'adintgr-form' ) ),
-		'selectors_per_page'                 		=> absint( apply_filters( 'adintgrform_admin_meta_boxes_selectors_per_page', 5 ) ),
+		'selectors_per_page'                 		=> absint( apply_filters( 'adintgr_admin_meta_boxes_selectors_per_page', 5 ) ),
 	);
 
-	wp_localize_script( 'wpadintgr-admin-meta-box', 'adintgrform_admin_meta_boxes_selectors', $params );
+	wp_localize_script( 'wpadintgr-admin-meta-box', 'adintgr_admin_meta_boxes_selectors', $params );
 
 }
 

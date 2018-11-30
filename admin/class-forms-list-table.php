@@ -114,10 +114,12 @@ class WPAdIntgr_Form_List_Table extends WP_List_Table {
 		$output = sprintf( '<strong>%s</strong>', $output );
 		
 		$actions = array( 'edit' => sprintf( '<a href="%1$s">%2$s</a>', esc_url( $edit_link ), esc_html( __( 'Edit', 'adintgr-form' ) ) ) );
-
+		
 		if ( current_user_can( 'wpadintgr_edit_form', $item->id() ) ) {
 			$copy_link = wp_nonce_url( add_query_arg( array( 'action' => 'copy' ), $url ), 'wpadintgr-copy-form_' . absint( $item->id() ) );
 			$actions = array_merge( $actions, array( 'copy' => sprintf( '<a href="%1$s">%2$s</a>', esc_url( $copy_link ), esc_html( __( 'Duplicate', 'adintgr-form' ) ) ), ) );
+			$delete_link = wp_nonce_url( add_query_arg( array( 'action' => 'delete' ), $url ), 'wpadintgr-delete-form_' . absint( $item->id() ) );
+			$actions = array_merge( $actions, array( 'delete' => sprintf( '<a href="%1$s">%2$s</a>', esc_url( $delete_link ), esc_html( __( 'Delete', 'adintgr-form' ) ) ), ) );
 		}
 		
 		$output .= $this->row_actions( $actions );
