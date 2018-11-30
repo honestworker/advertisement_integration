@@ -281,13 +281,12 @@ class WPAdIntgr_Form {
 		    }
 		    $elements .= " page_url=\"" . get_permalink( $this->pages_id[$i] ) . "\"/>";
 			$elements .= "<span class=\"wpadintgr-list-item-label\">" . $selectors[$i]['selector_name']  . "</span>";
-			$valid_zipcode = 1;
-			if ( $selectors[$i]['leave_type'] == 'mediaalpha' ) {
-				if ( $selectors[$i]['selector_type'] == 'popup' ) {
-					$valid_zipcode = 0;
-				}
-			} else {
+			$valid_zipcode = -1;
+			if ( $selectors[$i]['selector_type'] != '' ) {
 				$valid_zipcode = 0;
+				if ( $selectors[$i]['selector_type'] == 'leave' && $selectors[$i]['leave_type'] == 'mediaalpha' ) {
+					$valid_zipcode = 1;
+				}
 			}
 		    $elements .= "<input type=\"text\" class=\"valid-zipcode\" value=\"" . $valid_zipcode . "\" style=\"display: none;\">";
 		    $elements .= "</span>";
@@ -303,9 +302,60 @@ class WPAdIntgr_Form {
 		
 		$elements .= "</p>";
 		
+		add_action( 'wp_footer', array( $this, 'include_exit_code' ) );
+		
 		return $elements;
 	}
 
+    public function include_exit_code() {
+		$selectors = $this->prop( 'selectors' );
+        ?>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+        jQuery( function( $ ) {
+            document.body.addEventListener('mouseleave', function(e) {
+            if (e.pageY - document.body.scrollTop < 0) {
+				if ( typeof localStorage.getItem("exitpopup_time") != 'undefined' ) {
+					var nowDate = new Date();
+					var nowTime = nowDate.getTime();
+					if ( nowTime - localStorage.getItem("exitpopup_time") < 24 * 60 * 60 * 100 ) {
+						//return;
+					} else {
+						localStorage.setItem("exitpopup_time", nowTime);
+					}
+				}
+                var check_index;
+				$( '.adintgr_selector' ).each( function ( index, el ) {
+                    if ( $( this ).prop('checked') ) {
+                        check_index = $ ( this ).val();
+                    }
+				});
+		<?php
+			for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
+				if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
+					if ( $selectors[$selector_index]['exit_type'] == '' ) {
+		?>
+				if (check_index == <?php echo $selector_index; ?>) {
+					window.open('<?php echo $selectors[$selector_index]['exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+				}
+		<?php
+					} else if ($selectors[$selector_index]['exit_type'] == 'mediaalpha') {
+		?>
+				if (check_index == <?php echo $selector_index; ?>) {
+					window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+				}
+		<?php
+					}
+
+				}
+			}
+		?>  }
+		});
+		});
+		</script>
+		<?php
+    }
+	
 	/* Generating Form HTML */
 	public function form_html( $args = '' ) {
 		$args = wp_parse_args( $args, array(

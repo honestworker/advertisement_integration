@@ -166,14 +166,78 @@ if ( $post ) :
 										<input type="text" class="short selector_title" style="" name="selector_title[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['selector_title']; ?>" placeholder="">
 									</p>
 									<p class="form-selector">
+										<label for="selector_exit_check">Exit Intent Popup Page</label>
+										<input type="checkbox" class="checkbox selector_exit_check" name="selector_exit_check[<?php echo $i; ?>]" <?php if ($selectors[$i]['selector_exit_check'] == 'on') { echo $checked_html; }?>/>
+									</p>
+									<div class="adintgrform_selector_exit adintgr-metabox-sub-content adintgr-metabox-sub-content2" <?php if ($selectors[$i]['selector_exit_check'] != 'on') { echo $display_none_html; }?>>
+										<p class="form-selector">
+											<label for="exit_type">Integration Type</label>
+											<select name="exit_type[<?php echo $i; ?>]" class="short exit_type">
+												<option value="">None</option>
+												<option value="mediaalpha" <?php if ($selectors[$i]['exit_type'] == "mediaalpha") { echo "selected";} ?>>MediaAlpha</option>
+											</select>
+										</p>
+										<div class="exit-integration-none" <?php if ($selectors[$i]['exit_type'] != "") { echo $display_none_html;} ?>>
+											<p class="form-selector">
+												<label for="exit_url">URL</label>
+												<input type="text" class="short exit_url" style="" name="exit_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_url']; ?>" placeholder="">
+											</p>
+										</div>
+										<div class="exit-integration-mediaalpha" <?php if ($selectors[$i]['exit_type'] != "mediaalpha") { echo $display_none_html;} ?>>
+											<p class="form-selector">
+												<label for="exit_media_header">Page Header</label>
+												<input type="text" class="short exit_media_header" style="" name="exit_media_header[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_header']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_comment">MediaAlpha Comment</label>
+												<input type="text" class="short exit_media_comment" style="" name="exit_media_comment[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_comment']; ?>" placeholder="Niche Seekers, Inc. / Auto - Email - Short Form">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_type">MediaAlpha Type</label>
+												<select name="exit_media_type[<?php echo $i; ?>]" class="short exit_media_type">
+													<option value="ad_unit"<?php if ($selectors[$i]['exit_media_type'] == "ad_unit") { echo "selected";} ?>>Ad Unit(default)</option>
+													<option value="form" <?php if ($selectors[$i]['exit_media_type'] == "form") { echo "selected";} ?>>Form</option>
+												</select>
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_placeid">MediaAlpha Placement ID</label>
+												<input type="text" class="short exit_media_placeid" style="" name="exit_media_placeid[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_placeid']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_uaclass">MediaAlpha UA Class</label>
+												<select name="exit_media_uaclass[<?php echo $i; ?>]" class="short exit_media_uaclass">
+													<option value="web" <?php if ($selectors[$i]['exit_media_uaclass'] == "web") { echo "selected";} ?>>Web(default)</option>
+													<option value="mobile" <?php if ($selectors[$i]['exit_media_uaclass'] == "mobile") { echo "selected";} ?>>Mobile</option>
+													<option value="auto" <?php if ($selectors[$i]['exit_media_uaclass'] == "auto") { echo "selected";} ?>>Auto</option>
+												</select>
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_sub1">MediaAlpha Sub_1</label>
+												<input type="text" class="short exit_media_sub1" style="" name="exit_media_sub1[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_sub1']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_sub2">MediaAlpha Sub_2</label>
+												<input type="text" class="short exit_media_sub2" style="" name="exit_media_sub2[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_sub2']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_sub3">MediaAlpha Sub_3</label>
+												<input type="text" class="short exit_media_sub3" style="" name="exit_media_sub3[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_sub3']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="exit_media_code">Custom Code</label>
+												<textarea type="text" class="short exit_media_code" rows="10" name="exit_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_media_code']; ?>"></textarea>
+											</p>
+										</div>
+									</div>
+									<p class="form-selector">
 										<label for="selector_type">Page Type</label>
 										<select name="selector_type[<?php echo $i; ?>]" class="short selector_type">
+											<option value="" <?php if ($selectors[$i]['selector_type'] == "") { echo "selected";} ?>>None</option>
 											<option value="leave" <?php if ($selectors[$i]['selector_type'] == "leave") { echo "selected";} ?>>Leave</option>
 											<option value="popup" <?php if ($selectors[$i]['selector_type'] == "popup") { echo "selected";} ?>>Leave and Popup</option>
-											<option value="exit" <?php if ($selectors[$i]['selector_type'] == "exit") { echo "selected";} ?>>Exit Intent</option>
 										</select>
 									</p>
-									<div class="adintgrform_leave adintgr-metabox-sub-content">
+									<div class="adintgrform_leave adintgr-metabox-sub-content" <?php if ($selectors[$i]['selector_type'] == "") { echo $display_none_html;} ?>>
 										<div class="adintgrform_leave_label" <?php if ($selectors[$i]['selector_type'] != "popup") { echo $display_none_html;} ?>>
 											<p class="form-selector">Leave Page</p>
 										</div>
@@ -188,12 +252,6 @@ if ( $post ) :
 											<p class="form-selector">
 												<label for="leave_url">URL</label>
 												<input type="text" class="short leave_url" style="" name="leave_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_url']; ?>" placeholder="">
-											</p>
-										</div>
-										<div class="leave-exit-intent" <?php if ($selectors[$i]['selector_type'] != "exit" || $selectors[$i]['leave_type'] == "") { echo $display_none_html;} ?>>
-											<p class="form-selector">
-												<label for="exit_url">Exit Intent Popup URL</label>
-												<input type="text" class="short exit_url" style="" name="exit_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_url']; ?>" placeholder="">
 											</p>
 										</div>
 										<div class="leave-integration-mediaalpha" <?php if ($selectors[$i]['leave_type'] != "mediaalpha") { echo $display_none_html;} ?>>
@@ -240,6 +298,70 @@ if ( $post ) :
 												<label for="leave_media_code">Custom Code</label>
 												<textarea type="text" class="short leave_media_code" rows="10" name="leave_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_media_code']; ?>"></textarea>
 											</p>
+											<p class="form-selector">
+												<label for="leave_exit_check">Exit Intent Popup Page</label>
+												<input type="checkbox" class="checkbox leave_exit_check" name="leave_exit_check[<?php echo $i; ?>]" <?php if ($selectors[$i]['leave_exit_check'] == 'on') { echo $checked_html; }?>/>
+											</p>
+											<div class="adintgrform_leave_exit adintgr-metabox-sub-content" <?php if ($selectors[$i]['leave_exit_check'] != 'on') { echo $display_none_html; }?>>
+												<p class="form-selector">
+													<label for="leave_exit_type">Integration Type</label>
+													<select name="leave_exit_type[<?php echo $i; ?>]" class="short leave_exit_type">
+														<option value="">None</option>
+														<option value="mediaalpha" <?php if ($selectors[$i]['leave_exit_type'] == "mediaalpha") { echo "selected";} ?>>MediaAlpha</option>
+													</select>
+												</p>
+												<div class="leave-exit-integration-none" <?php if ($selectors[$i]['leave_exit_type'] != "") { echo $display_none_html;} ?>>
+													<p class="form-selector">
+														<label for="leave_exit_url">URL</label>
+														<input type="text" class="short leave_exit_url" style="" name="leave_exit_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_url']; ?>" placeholder="">
+													</p>
+												</div>
+												<div class="leave-exit-integration-mediaalpha" <?php if ($selectors[$i]['leave_exit_type'] != "mediaalpha") { echo $display_none_html;} ?>>
+													<p class="form-selector">
+														<label for="leave_exit_media_header">Page Header</label>
+														<input type="text" class="short leave_exit_media_header" style="" name="leave_exit_media_header[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_header']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_comment">MediaAlpha Comment</label>
+														<input type="text" class="short leave_exit_media_comment" style="" name="leave_exit_media_comment[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_comment']; ?>" placeholder="Niche Seekers, Inc. / Auto - Email - Short Form">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_type">MediaAlpha Type</label>
+														<select name="leave_exit_media_type[<?php echo $i; ?>]" class="short leave_exit_media_type">
+															<option value="ad_unit"<?php if ($selectors[$i]['leave_exit_media_type'] == "ad_unit") { echo "selected";} ?>>Ad Unit(default)</option>
+															<option value="form" <?php if ($selectors[$i]['leave_exit_media_type'] == "form") { echo "selected";} ?>>Form</option>
+														</select>
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_placeid">MediaAlpha Placement ID</label>
+														<input type="text" class="short leave_exit_media_placeid" style="" name="leave_exit_media_placeid[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_placeid']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_uaclass">MediaAlpha UA Class</label>
+														<select name="leave_exit_media_uaclass[<?php echo $i; ?>]" class="short leave_exit_media_uaclass">
+															<option value="web" <?php if ($selectors[$i]['leave_exit_media_uaclass'] == "web") { echo "selected";} ?>>Web(default)</option>
+															<option value="mobile" <?php if ($selectors[$i]['leave_exit_media_uaclass'] == "mobile") { echo "selected";} ?>>Mobile</option>
+															<option value="auto" <?php if ($selectors[$i]['leave_exit_media_uaclass'] == "auto") { echo "selected";} ?>>Auto</option>
+														</select>
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_sub1">MediaAlpha Sub_1</label>
+														<input type="text" class="short leave_exit_media_sub1" style="" name="leave_exit_media_sub1[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_sub1']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_sub2">MediaAlpha Sub_2</label>
+														<input type="text" class="short leave_exit_media_sub2" style="" name="leave_exit_media_sub2[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_sub2']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_sub3">MediaAlpha Sub_3</label>
+														<input type="text" class="short leave_exit_media_sub3" style="" name="leave_exit_media_sub3[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_sub3']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="leave_exit_media_code">Custom Code</label>
+														<textarea type="text" class="short leave_exit_media_code" rows="10" name="leave_exit_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_exit_media_code']; ?>"></textarea>
+													</p>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="adintgrform_popup adintgr-metabox-sub-content" <?php if ($selectors[$i]['selector_type'] != "popup") { echo $display_none_html;} ?>>
@@ -257,7 +379,7 @@ if ( $post ) :
 												<input type="text" class="short popup_url" style="" name="popup_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_url']; ?>" placeholder="">
 											</p>
 										</div>
-										<div class="popup-integration-mediaalpha" <?php if ($selectors[$i]['popup_type'] != "mediaalpha") { echo $display_none_html;} ?>>
+										<div class="popup-integration-mediaalpha" <?php if ($selectors[$i]['popup_type'] != "mediaalpha") { echo $display_none_html;} ?>>										
 											<p class="form-selector">
 												<label for="popup_media_header">Page Header</label>
 												<input type="text" class="short popup_media_header" style="" name="popup_media_header[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_media_header']; ?>" placeholder="">
@@ -301,6 +423,70 @@ if ( $post ) :
 												<label for="popup_media_code">Custom Code</label>
 												<textarea type="text" class="short popup_media_code" rows="10" name="popup_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_media_code']; ?>"></textarea>
 											</p>
+											<p class="form-selector">
+												<label for="popup_exit_check">Exit Intent Popup Page</label>
+												<input type="checkbox" class="checkbox popup_exit_check" name="popup_exit_check[<?php echo $i; ?>]" <?php if ($selectors[$i]['popup_exit_check'] == 'on') { echo $checked_html; }?>/>
+											</p>
+											<div class="adintgrform_popup_exit adintgr-metabox-sub-content" <?php if ($selectors[$i]['popup_exit_check'] != 'on') { echo $display_none_html; }?>>
+												<p class="form-selector">
+													<label for="popup_exit_type">Integration Type</label>
+													<select name="popup_exit_type[<?php echo $i; ?>]" class="short popup_exit_type">
+														<option value="">None</option>
+														<option value="mediaalpha" <?php if ($selectors[$i]['popup_exit_type'] == "mediaalpha") { echo "selected";} ?>>MediaAlpha</option>
+													</select>
+												</p>
+												<div class="popup-exit-integration-none" <?php if ($selectors[$i]['popup_exit_type'] != "") { echo $display_none_html;} ?>>
+													<p class="form-selector">
+														<label for="popup_exit_url">URL</label>
+														<input type="text" class="short popup_exit_url" style="" name="popup_exit_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_url']; ?>" placeholder="">
+													</p>
+												</div>
+												<div class="popup-exit-integration-mediaalpha" <?php if ($selectors[$i]['popup_exit_type'] != "mediaalpha") { echo $display_none_html;} ?>>
+													<p class="form-selector">
+														<label for="popup_exit_media_header">Page Header</label>
+														<input type="text" class="short popup_exit_media_header" style="" name="popup_exit_media_header[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_header']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_comment">MediaAlpha Comment</label>
+														<input type="text" class="short popup_exit_media_comment" style="" name="popup_exit_media_comment[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_comment']; ?>" placeholder="Niche Seekers, Inc. / Auto - Email - Short Form">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_type">MediaAlpha Type</label>
+														<select name="popup_exit_media_type[<?php echo $i; ?>]" class="short popup_exit_media_type">
+															<option value="ad_unit"<?php if ($selectors[$i]['popup_exit_media_type'] == "ad_unit") { echo "selected";} ?>>Ad Unit(default)</option>
+															<option value="form" <?php if ($selectors[$i]['popup_exit_media_type'] == "form") { echo "selected";} ?>>Form</option>
+														</select>
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_placeid">MediaAlpha Placement ID</label>
+														<input type="text" class="short popup_exit_media_placeid" style="" name="popup_exit_media_placeid[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_placeid']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_uaclass">MediaAlpha UA Class</label>
+														<select name="popup_exit_media_uaclass[<?php echo $i; ?>]" class="short popup_exit_media_uaclass">
+															<option value="web" <?php if ($selectors[$i]['popup_exit_media_uaclass'] == "web") { echo "selected";} ?>>Web(default)</option>
+															<option value="mobile" <?php if ($selectors[$i]['popup_exit_media_uaclass'] == "mobile") { echo "selected";} ?>>Mobile</option>
+															<option value="auto" <?php if ($selectors[$i]['popup_exit_media_uaclass'] == "auto") { echo "selected";} ?>>Auto</option>
+														</select>
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_sub1">MediaAlpha Sub_1</label>
+														<input type="text" class="short popup_exit_media_sub1" style="" name="popup_exit_media_sub1[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_sub1']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_sub2">MediaAlpha Sub_2</label>
+														<input type="text" class="short popup_exit_media_sub2" style="" name="popup_exit_media_sub2[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_sub2']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_sub3">MediaAlpha Sub_3</label>
+														<input type="text" class="short popup_exit_media_sub3" style="" name="popup_exit_media_sub3[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_sub3']; ?>" placeholder="">
+													</p>
+													<p class="form-selector">
+														<label for="popup_exit_media_code">Custom Code</label>
+														<textarea type="text" class="short popup_exit_media_code" rows="10" name="popup_exit_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_exit_media_code']; ?>"></textarea>
+													</p>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
