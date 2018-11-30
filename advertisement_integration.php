@@ -54,6 +54,8 @@ if ( is_admin() ) {
 	if ( wpadintgr_is_rtl() ) {
 		wp_enqueue_style( 'adintgr-form-rtl', wpadintgr_plugin_url( 'includes/css/style-rtl.css' ), array(), WPADINTGR_VERSION, 'all' );
 	}
+
+	wp_enqueue_script( 'wpadintgr-frontend', wpadintgr_plugin_url( 'includes/js/frontend.js' ), array( 'jquery' ), WPADINTGR_VERSION, true );
 }
 
 add_action( 'plugins_loaded', 'wpadintgr_load' );

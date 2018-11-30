@@ -45,7 +45,6 @@ function wpadintgr_load_form_admin() {
 		$args['id'] = $id;
 		$args['title'] = isset( $_POST['post_title'] ) ? $_POST['post_title'] : null;
 		$args['locale'] = isset( $_POST['wpadintgr-locale'] ) ? $_POST['wpadintgr-locale'] : null;
-		$args['selectors'] = isset( $_POST['wpadintgr-selectors'] ) ? $_POST['wpadintgr-selectors'] : null;
 
         $form = wpadintgr_save_form( $args );
 

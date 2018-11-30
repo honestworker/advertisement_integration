@@ -11,7 +11,7 @@ class WPAdIntgr_Form {
 	private $name;
 	private $title;
 	private $locale;
-	private $page_id;
+	private $pages_id = [];
 	private $unit_tag;
     private $properties = array();
     
@@ -115,6 +115,20 @@ class WPAdIntgr_Form {
 		return $unit_tag;
 	}
 
+	private static function get_unit_page( $id = 0 ) {
+		static $global_page_count = 0;
+		
+		$global_page_count += 1;
+		
+		if ( in_the_loop() ) {
+			$unit_page = sprintf( 'wpadintgr_f%1$d_p%2$d_o%3$d', absint( $id ), get_the_ID(), $global_page_count );
+		} else {
+			$unit_page = sprintf( 'wpadintgr_f%1$d_o%2$d', absint( $id ), $global_page_count );
+		}
+		
+		return $unit_page;
+	}
+
 	private function __construct( $post = null ) {
 		$post = get_post( $post );
 		
@@ -123,7 +137,7 @@ class WPAdIntgr_Form {
 			$this->name = $post->post_name;
 			$this->title = $post->post_title;
 			$this->locale = get_post_meta( $post->ID, '_locale', true );
-			$this->page_id = get_post_meta( $post->ID, '_page_id', true );
+			$this->pages_id = get_post_meta( $post->ID, '_pages_id', true );
 			
 			$properties = $this->get_properties();
 			
@@ -214,12 +228,12 @@ class WPAdIntgr_Form {
 		$this->title = $title;
 	}
 
-	public function page_id() {
-		return $this->page_id;
+	public function pages_id() {
+		return $this->pages_id;
 	}
 
-	public function set_page_id($page_id) {
-		$this->page_id = $page_id;
+	public function set_pages_id($pages_id) {
+		$this->pages_id = $pages_id;
 	}
 
 	public function locale() {
@@ -265,7 +279,7 @@ class WPAdIntgr_Form {
 		    if ($selectors[$i]['selector_check'] == "on") {
 		        $elements .= " checked=\"checked\"";
 		    }
-		    $elements .= "/>";
+		    $elements .= " page_url=\"" . get_permalink( $this->pages_id[$i] ) . "\"/>";
 		    $elements .= "<span class=\"wpadintgr-list-item-label\">" . $selectors[$i]['selector_name']  . "</span>";
 		    $elements .= "</span>";
 		}
@@ -291,13 +305,6 @@ class WPAdIntgr_Form {
 			'html_class' => '',
 		) );
 		
-		if ( ! current_user_can( 'wpadintgr_submit', $this->id() ) ) {
-			$notice = __("This form is available only for logged in users.", "adintgr-form" );
-			$notice = sprintf('<p class="wpadintgr-subscribers-only">%s</p>', esc_html( $notice ) );
-			
-			return apply_filters( 'wpadintgr_subscribers_only_notice', $notice, $this );
-		}
-		
 		$this->unit_tag = self::get_unit_tag( $this->id );
 		
 		$lang_tag = str_replace( '_', '-', $this->locale );
@@ -305,7 +312,7 @@ class WPAdIntgr_Form {
 			$lang_tag = $matches[1];
 		}
 		        
-		$html = sprintf( '<div %s>', wpadintgr_format_atts( array('role' => 'form', 'class' => 'wpadintgr',	'id' => $this->unit_tag, ( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang' => $lang_tag, 'dir' => wpadintgr_is_rtl( $this->locale ) ? 'rtl' : 'ltr', ) ));
+		$html = sprintf( '<div %s>', wpadintgr_format_atts( array('role' => 'form', 'class' => 'wpadintgr wpadintgr-wrapper',	'id' => $this->unit_tag, ( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang' => $lang_tag, 'dir' => wpadintgr_is_rtl( $this->locale ) ? 'rtl' : 'ltr', ) ));
         
         $url = wpadintgr_get_request_uri();
 		if ( $frag = strstr( $url, '#' ) ) {
@@ -331,8 +338,17 @@ class WPAdIntgr_Form {
 		$enctype = apply_filters( 'wpadintgr_form_enctype', '' );
 		$autocomplete = apply_filters( 'wpadintgr_form_autocomplete', '' );
 		
+		$selectors = $this->prop( 'selectors' );
+		$action_url = "";
+		for ( $index = 0; $index < $this->pages_id; $index++ ) {
+			if ( $selectors[$index]['selector_check'] == 'on' ) {
+				$action_url = get_permalink( $this->pages_id[ $index ] );
+				break;
+			}
+		}
+		
 		$atts = array(
-			'action' => esc_url( $url ) . 'adintgr_' . $this->id,
+			'action' => $action_url,
 			'method' => 'post',
 			'class' => $class,
 			'enctype' => wpadintgr_enctype_value( $enctype ),
@@ -362,7 +378,6 @@ class WPAdIntgr_Form {
 			'_wpadintgr' => $this->id(),
 			'_wpadintgr_version' => WPADINTGR_VERSION,
 			'_wpadintgr_locale' => $this->locale(),
-			'_wpadintgr_page_id' => $this->page_id(),
 			'_wpadintgr_unit_tag' => $this->unit_tag,
 			'_wpadintgr_container_post' => 0,
 		);
@@ -404,30 +419,51 @@ class WPAdIntgr_Form {
 				'post_type' => self::post_type,
 				'post_status' => 'publish',
 				'post_title' => $this->title,
-				'post_content' => trim( $post_content ),
-			));
-			$this->page_id = wp_insert_post( array(
-				'post_type' => 'page',
-				'post_name' => 'adintgr_' . $post_id,
-				'post_status' => 'publish',
-				'post_title' => $this->title,
 				'post_content' => '',
 			));
+			if ( isset( $props['selectors'] ) ) {
+				if ( is_array( $props['selectors'] ) ) {
+					for ( $index = 0; $indx < count( $props['selectors'] ); $indx++ ) {
+						$this->pages_id[] = wp_insert_post( array(
+							'post_type' => 'page',
+							'post_name' => $this->get_unit_page(),
+							'post_status' => 'publish',
+							'post_title' =>  $props['selectors'][$index]['selector_title'],
+							'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+						));
+					}
+				}
+			}
 		} else {
 			$post_id = wp_update_post( array(
 				'ID' => (int) $this->id,
 				'post_status' => 'publish',
 				'post_title' => $this->title,
-				'post_content' => trim( $post_content ),
-            ));
-            $page = get_post( $this->page_id );
-			$page_post_id = wp_update_post( array(
-				'post_type' => 'page',
-				'post_name' => 'adintgr_' . $post_id,
-				'post_status' => 'publish',
-				'post_title' => $this->title,
 				'post_content' => '',
 			));
+			if ( isset( $props['selectors'] ) ) {
+				if ( is_array( $props['selectors'] ) ) {
+					for ( $index = 0; $index < count( $props['selectors'] ); $index++ ) {
+						if ( $index + 1 > count( $this->pages_id ) ) {
+							$this->pages_id[] = wp_insert_post( array(
+								'post_type' => 'page',
+								'post_name' => $this->get_unit_page(),
+								'post_status' => 'publish',
+								'post_title' =>  $props['selectors'][$index]['selector_title'],
+								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+							));
+						} else {
+							wp_update_post( array(
+								'ID' => (int) $this->pages_id[$index],
+								'post_type' => 'page',
+								'post_status' => 'publish',
+								'post_title' =>  $props['selectors'][$index]['selector_title'],
+								'post_content' => "[adintgr-page id=\"" . $post_id . "\" title=\"" . $props['selectors'][$index]['selector_title'] . "\" index=\"". $index ."\"]",
+							));
+						}
+					}
+				}
+			}
 		}
 		
 		if ( $post_id ) {
@@ -439,7 +475,7 @@ class WPAdIntgr_Form {
 				update_post_meta( $post_id, '_locale', $this->locale );
 			}
 			
-			update_post_meta( $post_id, '_page_id', $this->page_id );
+			update_post_meta( $post_id, '_pages_id', $this->pages_id );
 			
 			if ( $this->initial() ) {
 				$this->id = $post_id;

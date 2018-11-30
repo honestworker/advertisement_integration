@@ -41,6 +41,7 @@ span.shortcode > input { background: inherit; color: inherit; font-size: 12px; b
  .toolbar-top { margin-bottom: 20px; }
  .toolbar-bottom { margin-top: 20px; }
  .adintgr-metabox-content { margin-bottom: 10px; padding-left: 15px; border-top: 1px solid #eee; }
+ .adintgr-metabox-sub-content { margin-bottom: 10px; padding-left: 15px; border-top: 1px solid #eee; }
  .integration-mediaalpha { padding-left: 15px; border-top: 1px solid #eee; }
  .adintgrform_adintgr_attributes p.form-selector { padding: 5px 20px 5px 162px!important; }
  .adintgrform_adintgr_attributes p { margin: 9px 0; line-height: 24px; }

@@ -19,7 +19,11 @@ jQuery( function( $ ) {
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', 'input.do_selector_action', this.do_selector_action );
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_check', this.change_checked );
 			
-			$( '.adintgr-metaboxes-wrapper' ).on( 'change', '.selector_type', this.change_type );
+			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_leave_check', this.change_leave_checked );
+			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.leave_type', this.change_leave_type );
+
+			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_popup_check', this.change_popup_checked );
+			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.popup_type', this.change_popup_type );
 			
 			adintgr_meta_boxes_selectors_actions.selectors_loaded( null, true );
 			adintgr_meta_boxes_selectors_actions.reload();
@@ -77,11 +81,81 @@ jQuery( function( $ ) {
 		/**
 		 * Actions
 		 */
+		change_leave_checked: function() {
+			if ( $( this ).prop('checked') ) {
+				$(this).parent().parent().find( '.adintgrform_leave' ).show();
+			} else {
+				$(this).parent().parent().find( '.adintgrform_leave' ).hide();
+			}
+		},
+
+		/**
+		 * Actions
+		 */
+		change_leave_type: function() {
+			if ( $( this ).val() == 'mediaalpha' ) {
+				$(this).parent().parent().parent().find( '.leave-integration-mediaalpha' ).show();
+				$(this).parent().parent().parent().find( '.leave-integration-none' ).hide();
+			} else {
+				$(this).parent().parent().parent().find( '.leave-integration-mediaalpha' ).hide();
+				$(this).parent().parent().parent().find( '.leave-integration-none' ).show();
+			}
+		},
+
+		/**
+		 * Actions
+		 */
+		change_popup_checked: function() {
+			if ( $( this ).prop('checked') ) {
+				$(this).parent().parent().find( '.adintgrform_popup' ).show();
+			} else {
+				$(this).parent().parent().find( '.adintgrform_popup' ).hide();
+			}
+		},
+
+		/**
+		 * Actions
+		 */
+		change_popup_type: function() {
+			if ( $( this ).val() == 'mediaalpha' ) {
+				$(this).parent().parent().parent().find( '.popup-integration-mediaalpha' ).show();
+				$(this).parent().parent().parent().find( '.popup-integration-none' ).hide();
+			} else {
+				$(this).parent().parent().parent().find( '.popup-integration-mediaalpha' ).hide();
+				$(this).parent().parent().parent().find( '.popup-integration-none' ).show();
+			}
+		},
+
+		/**
+		 * Actions
+		 */
 		change_checked: function() {
-			$( '.adintgr_check' ).each( function() {
+			$( '.selector_check' ).each( function() {
 				$( this ).prop('checked', false);
 			});
 			$( this ).prop('checked', true);
+		},
+
+		/**
+		 * Actions
+		 */
+		save_selectors: function(e) {
+			e.preventDefault();
+			$( '.adintgr_selectors .adintgr_selector' ).each( function ( index, el ) {
+				if ($( el ).find( '.selector_slug' ).val() == '') {
+					alert("No");
+					return;
+				}
+			});
+			$( this ).submit();
+		},
+
+		/**
+		 * Actions
+		 */
+		save_selectors: function(e) {
+			e.preventDefault();
+			$( this ).submit();
 		},
 
 		/**
@@ -96,16 +170,31 @@ jQuery( function( $ ) {
 				$( el ).find( '.selector_check' )[0].name = "selector_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.selector_name' )[0].name = "selector_name[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.selector_slug' )[0].name = "selector_slug[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.selector_url' )[0].name = "selector_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.selector_type' )[0].name = "selector_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_comment' )[0].name = "media_comment[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_type_unit' )[0].name = "media_type_unit[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_type_form' )[0].name = "media_type_form[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_placeid' )[0].name = "media_placeid[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_uaclass' )[0].name = "media_uaclass[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_sub1' )[0].name = "media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_sub2' )[0].name = "media_sub2[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_sub3' )[0].name = "media_sub3[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.selector_title' )[0].name = "selector_title[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				
+				$( el ).find( '.selector_leave_check' )[0].name = "selector_leave_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_type' )[0].name = "leave_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_url' )[0].name = "leave_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_header' )[0].name = "leave_media_header[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_comment' )[0].name = "leave_media_comment[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_type' )[0].name = "leave_media_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_placeid' )[0].name = "leave_media_placeid[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_uaclass' )[0].name = "leave_media_uaclass[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_sub1' )[0].name = "leave_media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_sub2' )[0].name = "leave_media_sub2[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_sub3' )[0].name = "leave_media_sub3[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				
+				$( el ).find( '.selector_popup_check' )[0].name = "selector_popup_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_type' )[0].name = "popup_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_url' )[0].name = "popup_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_header' )[0].name = "popup_media_header[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_comment' )[0].name = "popup_media_comment[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_type' )[0].name = "popup_media_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_placeid' )[0].name = "popup_media_placeid[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_uaclass' )[0].name = "popup_media_uaclass[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_sub1' )[0].name = "popup_media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_sub2' )[0].name = "popup_media_sub2[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_sub3' )[0].name = "popup_media_sub3[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 			});
 		},
 
@@ -167,49 +256,126 @@ jQuery( function( $ ) {
 									"<input type=\"text\" class=\"short selector_slug\" style=\"\" name=\"selector_slug[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"selector_url\">URL</label>" +
-									"<input type=\"text\" class=\"short selector_url\" style=\"\" name=\"selector_url[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"<label for=\"selector_title\">Page Title</label>" +
+									"<input type=\"text\" class=\"short selector_title\" style=\"\" name=\"selector_title[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"selector_type\">Integration Type</label>" +
-									"<select name=\"selector_type[" + count + "]\" class=\"short selector_type\">" +
+									"<label for=\"selector_leave_check\">Leave Page</label>" +
+									"<input type=\"checkbox\" class=\"checkbox selector_leave_check\" name=\"selector_leave_check[" + count + "]\"/>" +
+									"</p>" +
+									"<div class=\"adintgrform_leave adintgr-metabox-sub-content\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"leave_type\">Integration Type</label>" +
+									"<select name=\"leave_type[" + count + "]\" class=\"short leave_type\">" +
 									"<option value=\"\">None</option>" +
 									"<option value=\"mediaalpha\">MediaAlpha</option>" +
 									"</select>" +
 									"</p>" +
-									"<div class=\"integration-mediaalpha\" style=\"display: none;\">" +
+									"<div class=\"leave-integration-none\">" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_comment\">MediaAlpha Comment</label>" +
-									"<input type=\"text\" class=\"short media_comment\" style=\"\" name=\"media_comment[" + count + "]\" value=\"Niche Seekers, Inc. / Auto - Email - Short Form\" placeholder=\"\">" +
+									"<label for=\"leave_url\">URL</label>" +
+									"<input type=\"text\" class=\"short leave_url\" style=\"\" name=\"leave_url[" + count + "]\" value=\"\">" +
+									"</p>" +
+									"</div>" +
+									"<div class=\"leave-integration-mediaalpha\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"leave_media_header\">Page Header</label>" +
+									"<input type=\"text\" class=\"short leave_media_header\" style=\"\" name=\"leave_media_header[" + count + "]\" checked=\"checked\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_type\">MediaAlpha Type</label>" +									
-									"<input type=\"checkbox\" class=\"checkbox media_type_unit\" name=\"media_type_unit[" + count + "]\"/><span style=\"margin-right: 10px;\">Ad Unit(default)</span>" +
-									"<input type=\"checkbox\" class=\"checkbox media_type_form\" name=\"media_type_form[" + count + "]\"/><span>Form</span>" +
+									"<label for=\"leave_media_comment\">MediaAlpha Comment</label>" +
+									"<input type=\"text\" class=\"short leave_media_comment\" style=\"\" name=\"leave_media_comment[" + count + "]\" value=\"Niche Seekers, Inc. / Auto - Email - Short Form\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_placeid\">MediaAlpha Placement ID</label>" +
-									"<input type=\"text\" class=\"short media_placeid\" style=\"\" name=\"media_placeid[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"<label for=\"leave_media_type\">MediaAlpha Type</label>" +
+									"<select name=\"leave_media_type[" + count + "]\" class=\"short leave_media_type\">" +
+									"<option value=\"ad_unit\">Ad Unit(default)</option>" +
+									"<option value=\"form\">Form</option>" +
+									"</select>" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_uaclass\">MediaAlpha UA Class</label>" +
-									"<select name=\"media_uaclass[" + count + "]\" class=\"short media_uaclass\">" +
+									"<label for=\"leave_media_placeid\">MediaAlpha Placement ID</label>" +
+									"<input type=\"text\" class=\"short leave_media_placeid\" style=\"\" name=\"leave_media_placeid[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"leave_media_uaclass\">MediaAlpha UA Class</label>" +
+									"<select name=\"leave_media_uaclass[" + count + "]\" class=\"short leave_media_uaclass\">" +
 									"<option value=\"web\">Web(default)</option>" +
 									"<option value=\"mobile\">Mobile</option>" +
 									"<option value=\"auto\">Auto</option>" +
 									"</select>" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_sub1\">MediaAlpha Sub_1</label>" +
-									"<input type=\"text\" class=\"short media_sub1\" style=\"\" name=\"media_sub1[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"<label for=\"leave_media_sub1\">MediaAlpha Sub_1</label>" +
+									"<input type=\"text\" class=\"short leave_media_sub1\" style=\"\" name=\"leave_media_sub1[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_sub2\">MediaAlpha Sub_2</label>" +
-									"<input type=\"text\" class=\"short media_sub2\" style=\"\" name=\"media_sub2[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"<label for=\"leave_media_sub2\">MediaAlpha Sub_2</label>" +
+									"<input type=\"text\" class=\"short leave_media_sub2\" style=\"\" name=\"leave_media_sub2[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_sub3\">MediaAlpha Sub_3</label>" +
-									"<input type=\"text\" class=\"short media_sub3\" style=\"\" name=\"media_sub3[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"<label for=\"leave_media_sub3\">MediaAlpha Sub_3</label>" +
+									"<input type=\"text\" class=\"short leave_media_sub3\" style=\"\" name=\"leave_media_sub3[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"</p>" +
+									"</div>" +
+									"</div>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"selector_popup_check\">Popup Page</label>" +
+									"<input type=\"checkbox\" class=\"checkbox selector_popup_check\" name=\"selector_popup_check[" + count + "]\"/>" +
+									"</p>" +
+									"<div class=\"adintgrform_popup adintgr-metabox-sub-content\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_type\">Integration Type</label>" +
+									"<select name=\"popup_type[" + count + "]\" class=\"short popup_type\">" +
+									"<option value=\"\">None</option>" +
+									"<option value=\"mediaalpha\">MediaAlpha</option>" +
+									"</select>" +
+									"</p>" +
+									"<div class=\"popup-integration-none\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_url\">URL</label>" +
+									"<input type=\"text\" class=\"short popup_url\" style=\"\" name=\"popup_url[" + count + "]\" value=\"\">" +
+									"</p>" +
+									"</div>" +
+									"<div class=\"popup-integration-mediaalpha\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_header\">Page Header</label>" +
+									"<input type=\"text\" class=\"short popup_media_header\" style=\"\" name=\"popup_media_header[" + count + "]\" checked=\"checked\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_comment\">MediaAlpha Comment</label>" +
+									"<input type=\"text\" class=\"short popup_media_comment\" style=\"\" name=\"popup_media_comment[" + count + "]\" value=\"Niche Seekers, Inc. / Auto - Email - Short Form\" placeholder=\"\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_type\">MediaAlpha Type</label>" +
+									"<select name=\"popup_media_type[" + count + "]\" class=\"short popup_media_type\">" +
+									"<option value=\"ad_unit\">Ad Unit(default)</option>" +
+									"<option value=\"form\">Form</option>" +
+									"</select>" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_placeid\">MediaAlpha Placement ID</label>" +
+									"<input type=\"text\" class=\"short popup_media_placeid\" style=\"\" name=\"popup_media_placeid[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_uaclass\">MediaAlpha UA Class</label>" +
+									"<select name=\"popup_media_uaclass[" + count + "]\" class=\"short popup_media_uaclass\">" +
+									"<option value=\"web\">Web(default)</option>" +
+									"<option value=\"mobile\">Mobile</option>" +
+									"<option value=\"auto\">Auto</option>" +
+									"</select>" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_sub1\">MediaAlpha Sub_1</label>" +
+									"<input type=\"text\" class=\"short popup_media_sub1\" style=\"\" name=\"popup_media_sub1[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_sub2\">MediaAlpha Sub_2</label>" +
+									"<input type=\"text\" class=\"short popup_media_sub2\" style=\"\" name=\"popup_media_sub2[" + count + "]\" value=\"\" placeholder=\"\">" +
+									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_sub3\">MediaAlpha Sub_3</label>" +
+									"<input type=\"text\" class=\"short popup_media_sub3\" style=\"\" name=\"popup_media_sub3[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"</div>" +
 									"</div>" +
@@ -221,20 +387,6 @@ jQuery( function( $ ) {
 			$( 'button.cancel-selector-changes, button.save-selector-changes' ).removeAttr( 'disabled' );
 			$( '#adintgr_selector_options' ).trigger( 'adintgr_selectors_added', 1 );
 		},
-		
-		/**
-		 * Change Integration Type
-		 *
-		 * @return {Bool}
-		 */
-		change_type: function() {
-			var integration_type = $( this ).val();
-			if ( integration_type == 'mediaalpha' ) {
-				$(this).parent().parent().parent().find( '.integration-mediaalpha' ).show();
-			} else {
-				$(this).parent().parent().parent().find( '.integration-mediaalpha' ).hide();
-			}
-		}
 	};
 	
 	/**

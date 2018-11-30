@@ -1,7 +1,7 @@
 <?php
 
-function wpadintgr_page( $id ) {
-    return WPAdIntgr_Page::get_instance( $id );
+function wpadintgr_page( $id, $index ) {
+    return WPAdIntgr_Page::get_instance( $id, $index );
 }
 
 function wpadintgr_get_page_by_title( $title ) {
@@ -24,14 +24,16 @@ function wpadintgr_page_func( $atts, $content = null, $code = '' ) {
 			array(
 				'id' => 0,
 				'title' => '',
+				'index' => '',
 			),
 			$atts, 'wpadintgr'
 		);
 		
 		$id = (int) $atts['id'];
 		$title = trim( $atts['title'] );
+		$index = trim( $atts['index'] );
 		
-		if ( ! $page = wpadintgr_page( $id ) ) {
+		if ( ! $page = wpadintgr_page( $id, $index ) ) {
 			$page = wpadintgr_get_page_by_title( $title );
 		}
 	}
