@@ -275,12 +275,21 @@ class WPAdIntgr_Form {
 		        $elements .= "last";
 		    }
 		    $elements .= "\">";
-		    $elements .= "<input type=\"radio\" class=\"adintgr_selector\" name=\"selector\" value=\"" . $selectors[$i]['selector_slug']  . "\"";
+		    $elements .= "<input type=\"radio\" class=\"adintgr_selector\" name=\"adintgr-selector\" value=\"" . $i  . "\"";
 		    if ($selectors[$i]['selector_check'] == "on") {
 		        $elements .= " checked=\"checked\"";
 		    }
 		    $elements .= " page_url=\"" . get_permalink( $this->pages_id[$i] ) . "\"/>";
-		    $elements .= "<span class=\"wpadintgr-list-item-label\">" . $selectors[$i]['selector_name']  . "</span>";
+			$elements .= "<span class=\"wpadintgr-list-item-label\">" . $selectors[$i]['selector_name']  . "</span>";
+			$valid_zipcode = 1;
+			if ( $selectors[$i]['leave_type'] == 'mediaalpha' ) {
+				if ( $selectors[$i]['selector_type'] == 'popup' ) {
+					$valid_zipcode = 0;
+				}
+			} else {
+				$valid_zipcode = 0;
+			}
+		    $elements .= "<input type=\"text\" class=\"valid-zipcode\" value=\"" . $valid_zipcode . "\" style=\"display: none;\">";
 		    $elements .= "</span>";
 		}
 		

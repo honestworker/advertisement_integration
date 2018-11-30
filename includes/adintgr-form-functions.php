@@ -97,7 +97,8 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'selector_slug' => isset($args['selector_slug'][$i]) ? $args['selector_slug'][$i] : "",
 			'selector_title' => isset($args['selector_title'][$i]) ? $args['selector_title'][$i] : "",
 			
-			'selector_leave_check' => isset($args['selector_leave_check'][$i]) ? $args['selector_leave_check'][$i] : "",
+			'selector_type' => isset($args['selector_type'][$i]) ? $args['selector_type'][$i] : "",
+			
 			'leave_type' => isset($args['leave_type'][$i]) ? $args['leave_type'][$i] : "",
 			'leave_url' => isset($args['leave_url'][$i]) ? $args['leave_url'][$i] : "",
 			'leave_media_header' => isset($args['leave_media_header'][$i]) ? $args['leave_media_header'][$i] : "",
@@ -108,8 +109,8 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'leave_media_sub1' => isset($args['leave_media_sub1'][$i]) ? $args['leave_media_sub1'][$i] : "",
 			'leave_media_sub2' => isset($args['leave_media_sub2'][$i]) ? $args['leave_media_sub2'][$i] : "",
 			'leave_media_sub3' => isset($args['leave_media_sub3'][$i]) ? $args['leave_media_sub3'][$i] : "",
+			'leave_media_code' => isset($args['leave_media_code'][$i]) ? $args['leave_media_code'][$i] : "",
 			
-			'selector_popup_check' => isset($args['selector_popup_check'][$i]) ? $args['selector_popup_check'][$i] : "",
 			'popup_type' => isset($args['popup_type'][$i]) ? $args['popup_type'][$i] : "",
 			'popup_url' => isset($args['popup_url'][$i]) ? $args['popup_url'][$i] : "",
 			'popup_media_header' => isset($args['popup_media_header'][$i]) ? $args['popup_media_header'][$i] : "",
@@ -120,6 +121,9 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'popup_media_sub1' => isset($args['popup_media_sub1'][$i]) ? $args['popup_media_sub1'][$i] : "",
 			'popup_media_sub2' => isset($args['popup_media_sub2'][$i]) ? $args['popup_media_sub2'][$i] : "",
 			'popup_media_sub3' => isset($args['popup_media_sub3'][$i]) ? $args['popup_media_sub3'][$i] : "",
+			'popup_media_code' => isset($args['popup_media_code'][$i]) ? $args['popup_media_code'][$i] : "",
+			
+			'exit_url' => isset($args['exit_url'][$i]) ? $args['exit_url'][$i] : "",
 		);
 	}
 

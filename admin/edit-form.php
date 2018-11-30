@@ -166,10 +166,17 @@ if ( $post ) :
 										<input type="text" class="short selector_title" style="" name="selector_title[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['selector_title']; ?>" placeholder="">
 									</p>
 									<p class="form-selector">
-										<label for="selector_leave_check">Leave Page</label>
-										<input type="checkbox" class="checkbox selector_leave_check" name="selector_leave_check[<?php echo $i; ?>]" <?php if ($selectors[$i]['selector_leave_check'] == "on") { echo "checked=\"checked\"";} ?>>
+										<label for="selector_type">Page Type</label>
+										<select name="selector_type[<?php echo $i; ?>]" class="short selector_type">
+											<option value="leave" <?php if ($selectors[$i]['selector_type'] == "leave") { echo "selected";} ?>>Leave</option>
+											<option value="popup" <?php if ($selectors[$i]['selector_type'] == "popup") { echo "selected";} ?>>Leave and Popup</option>
+											<option value="exit" <?php if ($selectors[$i]['selector_type'] == "exit") { echo "selected";} ?>>Exit Intent</option>
+										</select>
 									</p>
-									<div class="adintgrform_leave adintgr-metabox-sub-content" <?php if ($selectors[$i]['selector_leave_check'] == "") { echo $display_none_html;} ?>>
+									<div class="adintgrform_leave adintgr-metabox-sub-content">
+										<div class="adintgrform_leave_label" <?php if ($selectors[$i]['selector_type'] != "popup") { echo $display_none_html;} ?>>
+											<p class="form-selector">Leave Page</p>
+										</div>
 										<p class="form-selector">
 											<label for="leave_type">Integration Type</label>
 											<select name="leave_type[<?php echo $i; ?>]" class="short leave_type">
@@ -181,6 +188,12 @@ if ( $post ) :
 											<p class="form-selector">
 												<label for="leave_url">URL</label>
 												<input type="text" class="short leave_url" style="" name="leave_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_url']; ?>" placeholder="">
+											</p>
+										</div>
+										<div class="leave-exit-intent" <?php if ($selectors[$i]['selector_type'] != "exit" || $selectors[$i]['leave_type'] == "") { echo $display_none_html;} ?>>
+											<p class="form-selector">
+												<label for="exit_url">Exit Intent Popup URL</label>
+												<input type="text" class="short exit_url" style="" name="exit_url[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['exit_url']; ?>" placeholder="">
 											</p>
 										</div>
 										<div class="leave-integration-mediaalpha" <?php if ($selectors[$i]['leave_type'] != "mediaalpha") { echo $display_none_html;} ?>>
@@ -223,13 +236,14 @@ if ( $post ) :
 												<label for="leave_media_sub3">MediaAlpha Sub_3</label>
 												<input type="text" class="short leave_media_sub3" style="" name="leave_media_sub3[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_media_sub3']; ?>" placeholder="">
 											</p>
+											<p class="form-selector">
+												<label for="leave_media_code">Custom Code</label>
+												<textarea type="text" class="short leave_media_code" rows="10" name="leave_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['leave_media_code']; ?>"></textarea>
+											</p>
 										</div>
 									</div>
-									<p class="form-selector">
-										<label for="selector_popup_check">Popup Page</label>
-										<input type="checkbox" class="checkbox selector_popup_check" name="selector_popup_check[<?php echo $i; ?>]" <?php if ($selectors[$i]['selector_popup_check'] == "on") { echo "checked=\"checked\"";} ?>>
-									</p>
-									<div class="adintgrform_popup adintgr-metabox-sub-content" <?php if ($selectors[$i]['selector_popup_check'] == "") { echo $display_none_html;} ?>>
+									<div class="adintgrform_popup adintgr-metabox-sub-content" <?php if ($selectors[$i]['selector_type'] != "popup") { echo $display_none_html;} ?>>
+										<p class="form-selector">Popup Page</p>
 										<p class="form-selector">
 											<label for="popup_type">Integration Type</label>
 											<select name="popup_type[<?php echo $i; ?>]" class="short popup_type">
@@ -282,6 +296,10 @@ if ( $post ) :
 											<p class="form-selector">
 												<label for="popup_media_sub3">MediaAlpha Sub_3</label>
 												<input type="text" class="short popup_media_sub3" style="" name="popup_media_sub3[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_media_sub3']; ?>" placeholder="">
+											</p>
+											<p class="form-selector">
+												<label for="popup_media_code">Custom Code</label>
+												<textarea type="text" class="short popup_media_code" rows="10" name="popup_media_code[<?php echo $i; ?>]" value="<?php echo $selectors[$i]['popup_media_code']; ?>"></textarea>
 											</p>
 										</div>
 									</div>

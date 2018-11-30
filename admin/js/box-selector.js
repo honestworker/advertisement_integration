@@ -18,6 +18,8 @@ jQuery( function( $ ) {
 			
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', 'input.do_selector_action', this.do_selector_action );
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_check', this.change_checked );
+
+			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_type', this.change_selector_type );
 			
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.selector_leave_check', this.change_leave_checked );
 			$( '.adintgr-metaboxes-wrapper' ).on( 'click', '.leave_type', this.change_leave_type );
@@ -81,6 +83,29 @@ jQuery( function( $ ) {
 		/**
 		 * Actions
 		 */
+		change_selector_type: function() {
+			if ( $( this ).val() == 'leave' ) {
+				$(this).parent().parent().find( '.adintgrform_popup' ).hide();
+				$(this).parent().parent().find( '.adintgrform_leave_label' ).hide();
+				$(this).parent().parent().find( '.leave-exit-intent' ).hide();
+			} else if ( $( this ).val() == 'popup' ) {
+				$(this).parent().parent().find( '.adintgrform_popup' ).show();
+				$(this).parent().parent().find( '.adintgrform_leave_label' ).show();
+				$(this).parent().parent().find( '.leave-exit-intent' ).hide();
+			} else if ( $( this ).val() == 'exit' ) {
+				$(this).parent().parent().find( '.adintgrform_popup' ).hide();
+				$(this).parent().parent().find( '.adintgrform_leave_label' ).hide();
+				if ( $(this).parent().parent().find( '.leave_type' ).val() == 'mediaalpha' ) {
+					$(this).parent().parent().find( '.leave-exit-intent' ).show();
+				} else {
+					$(this).parent().parent().find( '.leave-exit-intent' ).hide();
+				}
+			}
+		},
+
+		/**
+		 * Actions
+		 */
 		change_leave_checked: function() {
 			if ( $( this ).prop('checked') ) {
 				$(this).parent().parent().find( '.adintgrform_leave' ).show();
@@ -96,9 +121,15 @@ jQuery( function( $ ) {
 			if ( $( this ).val() == 'mediaalpha' ) {
 				$(this).parent().parent().parent().find( '.leave-integration-mediaalpha' ).show();
 				$(this).parent().parent().parent().find( '.leave-integration-none' ).hide();
+				if ( $(this).parent().parent().parent().find( '.selector_type' ).val() == 'exit' ) {
+					$(this).parent().parent().find( '.leave-exit-intent' ).show();
+				} else {
+					$(this).parent().parent().find( '.leave-exit-intent' ).hide();
+				}
 			} else {
 				$(this).parent().parent().parent().find( '.leave-integration-mediaalpha' ).hide();
 				$(this).parent().parent().parent().find( '.leave-integration-none' ).show();
+				$(this).parent().parent().find( '.leave-exit-intent' ).hide();
 			}
 		},
 
@@ -168,11 +199,13 @@ jQuery( function( $ ) {
 				
 			$( '.adintgr_selectors .adintgr_selector' ).each( function ( index, el ) {
 				$( el ).find( '.selector_check' )[0].name = "selector_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				
 				$( el ).find( '.selector_name' )[0].name = "selector_name[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.selector_slug' )[0].name = "selector_slug[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.selector_title' )[0].name = "selector_title[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				
-				$( el ).find( '.selector_leave_check' )[0].name = "selector_leave_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.selector_type' )[0].name = "selector_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+
 				$( el ).find( '.leave_type' )[0].name = "leave_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.leave_url' )[0].name = "leave_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.leave_media_header' )[0].name = "leave_media_header[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
@@ -183,8 +216,8 @@ jQuery( function( $ ) {
 				$( el ).find( '.leave_media_sub1' )[0].name = "leave_media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.leave_media_sub2' )[0].name = "leave_media_sub2[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.leave_media_sub3' )[0].name = "leave_media_sub3[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.leave_media_code' )[0].name = "leave_media_code[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				
-				$( el ).find( '.selector_popup_check' )[0].name = "selector_popup_check[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.popup_type' )[0].name = "popup_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.popup_url' )[0].name = "popup_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.popup_media_header' )[0].name = "popup_media_header[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
@@ -195,6 +228,9 @@ jQuery( function( $ ) {
 				$( el ).find( '.popup_media_sub1' )[0].name = "popup_media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.popup_media_sub2' )[0].name = "popup_media_sub2[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.popup_media_sub3' )[0].name = "popup_media_sub3[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.popup_media_code' )[0].name = "popup_media_code[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				
+				$( el ).find( '.exit_url' )[0].name = "exit_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 			});
 		},
 
@@ -260,10 +296,17 @@ jQuery( function( $ ) {
 									"<input type=\"text\" class=\"short selector_title\" style=\"\" name=\"selector_title[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"selector_leave_check\">Leave Page</label>" +
-									"<input type=\"checkbox\" class=\"checkbox selector_leave_check\" name=\"selector_leave_check[" + count + "]\"/>" +
+									"<label for=\"selector_type\">Page Type</label>" +
+									"<select name=\"selector_type[" + count + "]\" class=\"short selector_type\">" +
+									"<option value=\"leave\">Leave</option>" +
+									"<option value=\"popup\">Leave and Popup</option>" +
+									"<option value=\"exit\">Exit Intent</option>" +
+									"</select>" +
 									"</p>" +
-									"<div class=\"adintgrform_leave adintgr-metabox-sub-content\" style=\"display: none;\">" +
+									"<div class=\"adintgrform_leave adintgr-metabox-sub-content\">" +
+									"<div class=\"adintgrform_leave_label\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">Leave Page</p>" +
+									"</div>" +
 									"<p class=\"form-selector\">" +
 									"<label for=\"leave_type\">Integration Type</label>" +
 									"<select name=\"leave_type[" + count + "]\" class=\"short leave_type\">" +
@@ -275,6 +318,12 @@ jQuery( function( $ ) {
 									"<p class=\"form-selector\">" +
 									"<label for=\"leave_url\">URL</label>" +
 									"<input type=\"text\" class=\"short leave_url\" style=\"\" name=\"leave_url[" + count + "]\" value=\"\">" +
+									"</p>" +
+									"</div>" +
+									"<div class=\"leave-exit-intent\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"exit_url\">Exit Intent Popup URL</label>" +
+									"<input type=\"text\" class=\"short exit_url\" name=\"exit_url[" + count + "]\" value=\"\">" +
 									"</p>" +
 									"</div>" +
 									"<div class=\"leave-integration-mediaalpha\" style=\"display: none;\">" +
@@ -317,13 +366,14 @@ jQuery( function( $ ) {
 									"<label for=\"leave_media_sub3\">MediaAlpha Sub_3</label>" +
 									"<input type=\"text\" class=\"short leave_media_sub3\" style=\"\" name=\"leave_media_sub3[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
-									"</div>" +
-									"</div>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"selector_popup_check\">Popup Page</label>" +
-									"<input type=\"checkbox\" class=\"checkbox selector_popup_check\" name=\"selector_popup_check[" + count + "]\"/>" +
+									"<label for=\"leave_media_code\">Custom Code</label>" +
+									"<textarea type=\"text\" class=\"short leave_media_code\" rows=\"10\" name=\"leave_media_code[" + count + "]\" value=\"\"></textarea>" +
 									"</p>" +
+									"</div>" +
+									"</div>" +
 									"<div class=\"adintgrform_popup adintgr-metabox-sub-content\" style=\"display: none;\">" +
+									"<p class=\"form-selector\">Popup Page</p>" +
 									"<p class=\"form-selector\">" +
 									"<label for=\"popup_type\">Integration Type</label>" +
 									"<select name=\"popup_type[" + count + "]\" class=\"short popup_type\">" +
@@ -377,6 +427,12 @@ jQuery( function( $ ) {
 									"<label for=\"popup_media_sub3\">MediaAlpha Sub_3</label>" +
 									"<input type=\"text\" class=\"short popup_media_sub3\" style=\"\" name=\"popup_media_sub3[" + count + "]\" value=\"\" placeholder=\"\">" +
 									"</p>" +
+									"<p class=\"form-selector\">" +
+									"<label for=\"popup_media_code\">Custom Code</label>" +
+									"<textarea type=\"text\" class=\"short popup_media_code\" rows=\"10\" name=\"popup_media_code[" + count + "]\" value=\"\"></textarea>" +
+									"</p>" +
+									"</div>" +
+									"</div>" +
 									"</div>" +
 									"</div>" +
 									"</div>" +
