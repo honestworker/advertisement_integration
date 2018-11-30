@@ -42,6 +42,8 @@ require_once WPADINTGR_PLUGIN_DIR . '/includes/l10n.php';
 require_once WPADINTGR_PLUGIN_DIR . '/includes/capabilities.php';
 require_once WPADINTGR_PLUGIN_DIR . '/includes/adintgr-form.php';
 require_once WPADINTGR_PLUGIN_DIR . '/includes/adintgr-form-functions.php';
+require_once WPADINTGR_PLUGIN_DIR . '/includes/adintgr-page.php';
+require_once WPADINTGR_PLUGIN_DIR . '/includes/adintgr-page-functions.php';
 require_once WPADINTGR_PLUGIN_DIR . '/includes/submission.php';
 
 if ( is_admin() ) {

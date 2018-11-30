@@ -247,6 +247,42 @@ class WPAdIntgr_Form {
 		}
     }
     
+	public function form_elements() {
+		$elements = "<p>";
+		$elements .= "<span id=\"adintgr-checked\" class=\"wpadintgr-form-control-wrap checkboxes\">";
+		$elements .= "<span class=\"wpadintgr-form-control wpadintgr-radio checkboxes\">";
+		$selectors = $this->prop( 'selectors' );
+		$selector_count = count($selectors);
+		for ($i = 0; $i < $selector_count; $i++) {
+		    $elements .= "<span class=\"wpadintgr-list-item ";
+		    if ($i == 0) {
+		        $elements .= "first";
+		    } else if ($i == $selector_count - 1) {
+		        $elements .= "last";
+		    }
+		    $elements .= "\">";
+		    $elements .= "<input type=\"radio\" class=\"adintgr_selector\" name=\"selector\" value=\"" . $selectors[$i]['selector_slug']  . "\"";
+		    if ($selectors[$i]['selector_check'] == "on") {
+		        $elements .= " checked=\"checked\"";
+		    }
+		    $elements .= "/>";
+		    $elements .= "<span class=\"wpadintgr-list-item-label\">" . $selectors[$i]['selector_name']  . "</span>";
+		    $elements .= "</span>";
+		}
+		
+		$elements .= "</span>";
+		$elements .= "</span>";
+		
+		$elements .= "<span class=\"wpadintgr-form-control-wrap zipcode\">";
+		$elements .= "<input id=\"adintgr-zipcode\" type=\"text\" name=\"zipcode\" value=\"\" size=\"40\" class=\"wpadintgr-form-control wpadintgr-text wpadintgr-validates-as-required\" aria-required=\"true\" aria-invalid=\"false\" placeholder=\"Type Zipcode\">";
+		$elements .= "</span>";
+		$elements .= "<input type=\"submit\" value=\"GO>\" class=\"wpadintgr-form-control wpadintgr-submit submit\">";
+		
+		$elements .= "</p>";
+		
+		return $elements;
+	}
+
 	/* Generating Form HTML */
 	public function form_html( $args = '' ) {
 		$args = wp_parse_args( $args, array(
@@ -296,7 +332,7 @@ class WPAdIntgr_Form {
 		$autocomplete = apply_filters( 'wpadintgr_form_autocomplete', '' );
 		
 		$atts = array(
-			'action' => esc_url( $url ),
+			'action' => esc_url( $url ) . 'adintgr_' . $this->id,
 			'method' => 'post',
 			'class' => $class,
 			'enctype' => wpadintgr_enctype_value( $enctype ),
@@ -314,7 +350,7 @@ class WPAdIntgr_Form {
 		$atts = wpadintgr_format_atts( $atts );		
 		$html .= sprintf( '<form %s>', $atts ) . "\n";
 		$html .= $this->form_hidden_fields();
-		//$html .= $this->form_elements();		
+		$html .= $this->form_elements();		
 		$html .= '</form>';
 		$html .= '</div>';
 		
@@ -334,28 +370,27 @@ class WPAdIntgr_Form {
 		if ( in_the_loop() ) {
 			$hidden_fields['_wpadintgr_container_post'] = (int) get_the_ID();
 		}
-
+		
 		if ( $this->nonce_is_active() ) {
 			$hidden_fields['_wpnonce'] = wpadintgr_create_nonce();
 		}
-
-		$hidden_fields += (array) apply_filters(
-			'wpadintgr_form_hidden_fields', array() );
-
+		
+		$hidden_fields += (array) apply_filters( 'wpadintgr_form_hidden_fields', array() );
+		
 		$content = '';
-
+		
 		foreach ( $hidden_fields as $name => $value ) {
 			$content .= sprintf( '<input type="hidden" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $value ) ) . "\n";
 		}
-
+		
 		return '<div style="display: none;">' . "\n" . $content . '</div>' . "\n";
     }
     
 	public function nonce_is_active() {
 		$is_active = WPADINTGR_VERIFY_NONCE;
-
+		
 		$is_active = true;
-
+		
 		return (bool) apply_filters( 'wpadintgr_verify_nonce', $is_active, $this );
 	}
 
@@ -394,28 +429,28 @@ class WPAdIntgr_Form {
 				'post_content' => '',
 			));
 		}
-
+		
 		if ( $post_id ) {
 			foreach ( $props as $prop => $value ) {
                 update_post_meta( $post_id, '_' . $prop, wpadintgr_normalize_newline_deep( $value ) );
 			}
-
+			
 			if ( wpadintgr_is_valid_locale( $this->locale ) ) {
 				update_post_meta( $post_id, '_locale', $this->locale );
 			}
-
+			
 			update_post_meta( $post_id, '_page_id', $this->page_id );
-
+			
 			if ( $this->initial() ) {
 				$this->id = $post_id;
 				do_action( 'wpadintgr_after_create', $this );
 			} else {
 				do_action( 'wpadintgr_after_update', $this );
 			}
-
+			
 			do_action( 'wpadintgr_after_save', $this );
 		}
-
+		
 		return $post_id;
 	}
 
@@ -425,7 +460,7 @@ class WPAdIntgr_Form {
 		$new->title = $this->title . '_copy';
 		$new->locale = $this->locale;
 		$new->properties = $this->properties;
-
+		
 		return apply_filters( 'wpadintgr_copy', $new, $this );
 	}
 
@@ -434,12 +469,12 @@ class WPAdIntgr_Form {
 		if ( $this->initial() ) {
 			return;
 		}
-
+		
 		if ( wp_delete_post( $this->id, true ) ) {
 			$this->id = 0;
 			return true;
 		}
-
+		
 		return false;
 	}
 

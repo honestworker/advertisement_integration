@@ -48,14 +48,6 @@ function wpadintgr_form_func( $atts, $content = null, $code = '' ) {
 		if ( ! $form = wpadintgr_form( $id ) ) {
 			$form = wpadintgr_get_form_by_title( $title );
 		}
-
-	} else {
-		if ( is_string( $atts ) ) {
-			$atts = explode( ' ', $atts, 2 );
-		}
-
-		$id = (int) array_shift( $atts );
-		$form = wpadintgr_get_form_by_old_id( $id );
 	}
 
 	if ( ! $form ) {
@@ -96,9 +88,9 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 	$properties = $form->get_properties();
 
 	$loop = count($args['selector_name']);
-	$properties['selectors'] = [];
+	$properties[ 'selectors' ] = [];
 	for ($i = 0; $i < $loop; $i++) {
-		$properties['selectors'][] = array(
+		$properties[ 'selectors' ][] = array(
 			'selector_check' => isset($args['selector_check'][$i]) ? $args['selector_check'][$i] : "",
 
 			'selector_name' => isset($args['selector_name'][$i]) ? $args['selector_name'][$i] : "",
