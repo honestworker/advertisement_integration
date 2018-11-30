@@ -49,7 +49,11 @@ require_once WPADINTGR_PLUGIN_DIR . '/includes/submission.php';
 if ( is_admin() ) {
 	require_once WPADINTGR_PLUGIN_DIR . '/admin/admin.php';
 } else {
-	require_once WPADINTGR_PLUGIN_DIR . '/includes/controller.php';
+	wp_enqueue_style( 'adintgr-form', wpadintgr_plugin_url( 'includes/css/style.css' ), array(), WPADINTGR_VERSION, 'all' );
+
+	if ( wpadintgr_is_rtl() ) {
+		wp_enqueue_style( 'adintgr-form-rtl', wpadintgr_plugin_url( 'includes/css/style-rtl.css' ), array(), WPADINTGR_VERSION, 'all' );
+	}
 }
 
 add_action( 'plugins_loaded', 'wpadintgr_load' );

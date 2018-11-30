@@ -37,7 +37,7 @@ jQuery( function ( $ ) {
 		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
 			return;
 		}
-
+		
 		$( this ).next( '.adintgr-metabox-content' ).stop().slideToggle();
 	})
 	.on( 'click', '.expand_all', function() {

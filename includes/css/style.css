@@ -1,0 +1,17 @@
+.checkboxes > span > span.wpadintgr-list-item{ margin-left:0;float:left;width:100%;color:#fff;margin-bottom:10px;text-transform:uppercase; }
+.checkboxes > span > span.wpadintgr-list-item label{ float:left;width:100%;margin-bottom:15px; }
+.checkboxes > span > span.wpadintgr-list-item:first-of-type { display: flex;  align-items: flex-start;  margin-bottom: 10px;}
+.checkboxes > span > span.wpadintgr-list-item span.wpadintgr-list-item-label { margin-left: 10px;  line-height: 32px;}
+.checkboxes > span > span.wpadintgr-list-item input[type="radio"] { -webkit-appearance: none; -moz-appearance: none; appearance: none; border-radius: 0; float: left;width: 32px;height: 32px; border: 2px solid #fff; transition: 0.2s all linear; outline: none; position: relative; margin-top: 0;}
+.checkboxes > span > span.wpadintgr-list-item input:checked:before {content: "\002713";color: #fff;font: 32px/1em sans-serif;font-weight: bold;}
+
+@media screen and (min-width:768px) and (max-width:992px){
+    .checkboxes > span > span.wpadintgr-list-item input[type="radio"]{ width:26px; height:26px;}
+    .checkboxes > span > span.wpadintgr-list-item input:checked:before{ font:26px/1em sans-serif;}
+    .checkboxes > span > span.wpadintgr-list-item span.wpadintgr-list-item-label{ line-height:26px;}
+    span.wpadintgr-form-control-wrap.zipcode input[type="text"]{ min-height:60px; }input[type="submit"].submit{ font-size:32px; min-height:40px;}
+}
+
+span.wpadintgr-form-control-wrap.zipcode input[type="text"]{ min-height: 70px; border-radius: 10px 0 0 10px;}
+span.wpadintgr-form-control-wrap.zipcode{ width: 63%;float: left; }
+input[type="submit"].submit{ width: 33%;float: left;border-radius: 0 10px 10px 0;min-height: 70px;background: #e26053;text-transform: uppercase;font-size: 37px;font-weight: 500; }

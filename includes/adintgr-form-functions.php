@@ -92,15 +92,16 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 	for ($i = 0; $i < $loop; $i++) {
 		$properties[ 'selectors' ][] = array(
 			'selector_check' => isset($args['selector_check'][$i]) ? $args['selector_check'][$i] : "",
-
+			
 			'selector_name' => isset($args['selector_name'][$i]) ? $args['selector_name'][$i] : "",
 			'selector_slug' => isset($args['selector_slug'][$i]) ? $args['selector_slug'][$i] : "",
 			'selector_url' => isset($args['selector_url'][$i]) ? $args['selector_url'][$i] : "",
-
+			
 			'selector_type' => isset($args['selector_type'][$i]) ? $args['selector_type'][$i] : "",
-
+			
 			'media_comment' => isset($args['media_comment'][$i]) ? $args['media_comment'][$i] : "",
-			'media_type' => isset($args['media_type'][$i]) ? $args['media_type'][$i] : "",
+			'media_type_unit' => isset($args['media_type_unit'][$i]) ? $args['media_type_unit'][$i] : "",
+			'media_type_form' => isset($args['media_type_form'][$i]) ? $args['media_type_form'][$i] : "",
 			'media_placeid' => isset($args['media_placeid'][$i]) ? $args['media_placeid'][$i] : "",
 			'media_uaclass' => isset($args['media_uaclass'][$i]) ? $args['media_uaclass'][$i] : "",
 			'media_sub1' => isset($args['media_sub1'][$i]) ? $args['media_sub1'][$i] : "",

@@ -99,7 +99,8 @@ jQuery( function( $ ) {
 				$( el ).find( '.selector_url' )[0].name = "selector_url[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.selector_type' )[0].name = "selector_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.media_comment' )[0].name = "media_comment[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
-				$( el ).find( '.media_type' )[0].name = "media_type[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.media_type_unit' )[0].name = "media_type_unit[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
+				$( el ).find( '.media_type_form' )[0].name = "media_type_form[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.media_placeid' )[0].name = "media_placeid[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.media_uaclass' )[0].name = "media_uaclass[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
 				$( el ).find( '.media_sub1' )[0].name = "media_sub1[" + parseInt( $( el ).index( '.adintgr_selectors .adintgr_selector' ) + offset, 10 ) + "]";
@@ -182,11 +183,9 @@ jQuery( function( $ ) {
 									"<input type=\"text\" class=\"short media_comment\" style=\"\" name=\"media_comment[" + count + "]\" value=\"Niche Seekers, Inc. / Auto - Email - Short Form\" placeholder=\"\">" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
-									"<label for=\"media_type\">MediaAlpha Type</label>" +
-									"<select name=\"media_type[" + count + "]\" class=\"short media_type\">" +
-									"<option value=\"ad_unit\">Ad Unit(default)</option>" +
-									"<option value=\"form\">Form</option>" +
-									"</select>" +
+									"<label for=\"media_type\">MediaAlpha Type</label>" +									
+									"<input type=\"checkbox\" class=\"checkbox media_type_unit\" name=\"media_type_unit[" + count + "]\"/><span style=\"margin-right: 10px;\">Ad Unit(default)</span>" +
+									"<input type=\"checkbox\" class=\"checkbox media_type_form\" name=\"media_type_form[" + count + "]\"/><span>Form</span>" +
 									"</p>" +
 									"<p class=\"form-selector\">" +
 									"<label for=\"media_placeid\">MediaAlpha Placement ID</label>" +

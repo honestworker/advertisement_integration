@@ -143,6 +143,7 @@ if ( $post ) :
 								<?php } else { ?>
 									<input type="checkbox" class="checkbox selector_check" name="selector_check[<?php echo $i; ?>]"/>
 								<?php } ?>
+								<?php echo $selectors[$i]['selector_name']; ?>
 								<a href="#" class="remove_selector delete">Remove</a>
 								<div class="handlediv" aria-label="Click to toggle"></div>
 								<div class="tips sort" data-tip="Drag and drop to set section order"></div>
@@ -176,10 +177,8 @@ if ( $post ) :
 										</p>
 										<p class="form-selector">
 											<label for="media_type">MediaAlpha Type</label>
-											<select name="media_type[<?php echo $i; ?>]" class="short media_type">
-												<option value="ad_unit" <?php if ($selectors[$i]['media_type'] == "ad_unit") { echo "selected";} ?>>Ad Unit(default)</option>
-												<option value="form" <?php if ($selectors[$i]['media_type'] == "form") { echo "selected";} ?>>Form</option>
-											</select>
+											<input type="checkbox" class="checkbox media_type_unit" name="media_type_unit[<?php echo $i; ?>]" <?php if ($selectors[$i]['media_type_unit'] == "on") { echo "checked=\"checked\"";} ?>/><span style="margin-right: 10px;">Ad Unit(default)</span>
+											<input type="checkbox" class="checkbox media_type_form" name="media_type_form[<?php echo $i; ?>]" <?php if ($selectors[$i]['media_type_form'] == "on") { echo "checked=\"checked\"";} ?>/><span>Form</span>
 										</p>
 										<p class="form-selector">
 											<label for="media_placeid">MediaAlpha Placement ID</label>
