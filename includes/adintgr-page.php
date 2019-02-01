@@ -88,7 +88,7 @@ class WPAdIntgr_Page {
                         $page_html .= "f.parentNode.insertBefore(e, f);\n";
                         $page_html .= "}(document.createElement('script'),\n";
                         $page_html .= "document.getElementsByTagName('script')[0],\n";
-                        $page_html .= "'https://insuranceclicks.com/iClickListing/RenderListing.js');\n";
+                        $page_html .= "'/wp-content/plugins/advertisement_integration/includes/js/insurancerender.js" . "');\n";
                         $page_html .= "</script>\n";
                     } else {
                         add_action( 'wp_footer', array( $this, 'include_exit_redirect_code' ) );
@@ -144,7 +144,7 @@ class WPAdIntgr_Page {
                                 $page_html .= "f.parentNode.insertBefore(e, f);\n";
                                 $page_html .= "}(document.createElement('script'),\n";
                                 $page_html .= "document.getElementsByTagName('script')[0],\n";
-                                $page_html .= "'https://insuranceclicks.com/iClickListing/RenderListing.js');\n";
+                                $page_html .= "'/wp-content/plugins/advertisement_integration/includes/js/insurancerender.js" . "');\n";
                                 $page_html .= "</script>\n";
                             } else {
                                 add_action( 'wp_footer', array( $this, 'include_exit_leave_redirect_code' ) );
@@ -202,7 +202,7 @@ class WPAdIntgr_Page {
                                 $page_html .= "f.parentNode.insertBefore(e, f);\n";
                                 $page_html .= "}(document.createElement('script'),\n";
                                 $page_html .= "document.getElementsByTagName('script')[0],\n";
-                                $page_html .= "'https://insuranceclicks.com/iClickListing/RenderListing.js');\n";
+                                $page_html .= "'/wp-content/plugins/advertisement_integration/includes/js/insurancerender.js" . "');\n";
                                 $page_html .= "</script>\n";
                             } else {
                                 add_action( 'wp_footer', array( $this, 'include_exit_popup_redirect_code' ) );
@@ -223,9 +223,9 @@ class WPAdIntgr_Page {
                         $selector = $selectors[$_POST['adintgr-selector']];
                         if ( $selector['selector_type'] == 'popup' ) {
                             if ( $selector['popup_type'] == '' ) {
-                                add_action( 'wp_footer', array( $this, 'include_popup_redirect_script' ) );
+                                add_action( 'wp_footer', array( $this, 'include_popup_redirect_code' ) );
                             } else {
-                                add_action( 'wp_footer', array( $this, 'include_popup_script' ) );
+                                add_action( 'wp_footer', array( $this, 'include_popup_code' ) );
                             }
                         }
                         if ( $selector['leave_type'] == 'mediaalpha' ) {
@@ -271,7 +271,7 @@ class WPAdIntgr_Page {
                             $page_html .= "f.parentNode.insertBefore(e, f);\n";
                             $page_html .= "}(document.createElement('script'),\n";
                             $page_html .= "document.getElementsByTagName('script')[0],\n";
-                            $page_html .= "'https://insuranceclicks.com/iClickListing/RenderListing.js');\n";
+                            $page_html .= "'/wp-content/plugins/advertisement_integration/includes/js/insurancerender.js" . "');\n";
                             $page_html .= "</script>\n";
                         } else {
                             add_action( 'wp_footer', array( $this, 'include_leave_redirect_code' ) );
@@ -335,11 +335,11 @@ class WPAdIntgr_Page {
                             $page_html .= "f.parentNode.insertBefore(e, f);\n";
                             $page_html .= "}(document.createElement('script'),\n";
                             $page_html .= "document.getElementsByTagName('script')[0],\n";
-                            $page_html .= "'https://insuranceclicks.com/iClickListing/RenderListing.js');\n";
+                            $page_html .= "'/wp-content/plugins/advertisement_integration/includes/js/insurancerender.js" . "');\n";
                         } else {
                             add_action( 'wp_footer', array( $this, 'include_popup_redirect_code' ) );
                         }
-                        if ( $selector['popup_type'] != '' ) {                            
+                        if ( $selector['popup_type'] != '' ) {
                             if ( $selector['popup_code'] ) {
                                 add_action( 'wp_footer', array( $this, 'include_popup_custom_code' ) );
                             }
@@ -377,7 +377,7 @@ class WPAdIntgr_Page {
         }
     }
 
-    public function include_popup_script() {
+    public function include_popup_code() {
         $selectors = $this->form->prop( 'selectors' );
         $selector = $selectors[$_POST['adintgr-selector']];
         ?>
@@ -390,7 +390,7 @@ class WPAdIntgr_Page {
         <?php
     }
 
-    public function include_popup_redirect_script() {
+    public function include_popup_redirect_code() {
         if ( isset($_POST['adintgr-selector']) ) {
             $selectors = $this->form->prop( 'selectors' );
             $selector = $selectors[$_POST['adintgr-selector']];
