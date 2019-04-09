@@ -384,7 +384,7 @@ class WPAdIntgr_Page {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
         jQuery(function($) {
-            window.open('<?php echo get_permalink($this->pages_id[$_POST['adintgr-selector']]);?>?zipcode=<?php echo $_POST['zipcode'];?>&selector=<?php echo $_POST['adintgr-selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+            setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$_POST['adintgr-selector']]);?>?zipcode=<?php echo $_POST['zipcode'];?>&selector=<?php echo $_POST['adintgr-selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
         });
         </script>
         <?php
@@ -398,7 +398,7 @@ class WPAdIntgr_Page {
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script type="text/javascript">
             jQuery(function($) {
-			    window.open('<?php echo $selector['popup_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+			    setTimeout(() => window.open('<?php echo $selector['popup_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
             });
             </script>
         <?php
@@ -470,11 +470,11 @@ class WPAdIntgr_Page {
 		<?php
 				if ( $selector['leave_exit_type'] == '' ) {
 		?>
-					window.open('<?php echo $selector['leave_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo $selector['leave_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 		<?php
 				} else if ($selector['leave_exit_type'] == 'mediaalpha') {
 		?>
-					window.open('<?php echo get_permalink($this->pages_id[$_POST['adintgr-selector']]);?>?action=leave&selector=<?php echo $_POST['adintgr-selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$_POST['adintgr-selector']]);?>?action=leave&selector=<?php echo $_POST['adintgr-selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 		<?php
                 }
 		?>  }
@@ -535,11 +535,11 @@ class WPAdIntgr_Page {
 		<?php
 				if ( $selector['popup_exit_type'] == '' ) {
 		?>
-					window.open('<?php echo $selector['popup_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo $selector['popup_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 		<?php
 				} else if ($selector['popup_exit_type'] == 'mediaalpha') {
 		?>
-					window.open('<?php echo get_permalink($this->pages_id[$_GET['selector']]);?>?action=popup&selector=<?php echo $_GET['selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$_GET['selector']]);?>?action=popup&selector=<?php echo $_GET['selector'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 		<?php
                 }
 		?>  }

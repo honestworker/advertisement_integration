@@ -365,13 +365,13 @@ class WPAdIntgr_Form {
 					if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
 		?>
 				if (check_index == <?php echo $selector_index; ?>) {
-					window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 				}
 		<?php
 					} else {
 		?>
 				if (check_index == <?php echo $selector_index; ?>) {
-					window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',');
+					setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 				}
 		<?php
 					}

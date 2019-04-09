@@ -16,6 +16,9 @@ Wordpress Plugin(From Scratch)
 
 ## Change Log
 
+1.2 2019/04/09
+	Force to open the popup window.
+
 1.1 2019/02/01
 	Include the insurancerender.js that works like RenderListing of InsuranceClicks.
     Because that file has the error.
