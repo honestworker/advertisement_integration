@@ -119,6 +119,7 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			
 			'selector_type' => isset($args['selector_type'][$i]) ? $args['selector_type'][$i] : "",
 			
+			// Leave Page
 			'leave_type' => isset($args['leave_type'][$i]) ? $args['leave_type'][$i] : "",
 			'leave_url' => isset($args['leave_url'][$i]) ? $args['leave_url'][$i] : "",
 			'leave_header' => isset($args['leave_header'][$i]) ? $args['leave_header'][$i] : "",
@@ -157,6 +158,7 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'leave_exit_insurance_type' => isset($args['leave_exit_insurance_type'][$i]) ? $args['leave_exit_insurance_type'][$i] : "",
 			'leave_exit_insurance_state' => isset($args['leave_exit_insurance_state'][$i]) ? $args['leave_exit_insurance_state'][$i] : "",
 			
+			// Popup Page
 			'popup_type' => isset($args['popup_type'][$i]) ? $args['popup_type'][$i] : "",
 			'popup_url' => isset($args['popup_url'][$i]) ? $args['popup_url'][$i] : "",
 			'popup_header' => isset($args['popup_header'][$i]) ? $args['popup_header'][$i] : "",
@@ -170,7 +172,10 @@ function wpadintgr_save_form( $args = '', $context = 'save' ) {
 			'popup_media_sub2' => isset($args['popup_media_sub2'][$i]) ? $args['popup_media_sub2'][$i] : "",
 			'popup_media_sub3' => isset($args['popup_media_sub3'][$i]) ? $args['popup_media_sub3'][$i] : "",
 
-			'leave_exit_check' => isset($args['leave_exit_check'][$i]) ? $args['leave_exit_check'][$i] : "",
+			'popup_insurance_token' => isset($args['popup_insurance_token'][$i]) ? $args['popup_insurance_token'][$i] : "",
+			'popup_insurance_userid' => isset($args['popup_insurance_userid'][$i]) ? $args['popup_insurance_userid'][$i] : "",
+			'popup_insurance_type' => isset($args['popup_insurance_type'][$i]) ? $args['popup_insurance_type'][$i] : "",
+			'popup_insurance_state' => isset($args['popup_insurance_state'][$i]) ? $args['popup_insurance_state'][$i] : "",
 			
 			'popup_exit_check' => isset($args['popup_exit_check'][$i]) ? $args['popup_exit_check'][$i] : "",
 			'popup_exit_period' => isset($args['popup_exit_period'][$i]) ? $args['popup_exit_period'][$i] : "",

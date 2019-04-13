@@ -16,6 +16,10 @@ Wordpress Plugin(From Scratch)
 
 ## Change Log
 
+1.3 2019/04/12
+	The popup window will open after the user click the button.
+    So the main page will open the popup page and leave page at the same time.
+
 1.2 2019/04/09
 	Force to open the popup window.
 

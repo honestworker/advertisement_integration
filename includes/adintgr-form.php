@@ -325,6 +325,31 @@ class WPAdIntgr_Form {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
         jQuery( function( $ ) {
+			$('#wpadintgr-form').submit(function() {
+                var check_index;	
+				$( '.adintgr_selector' ).each( function ( index, el ) {
+                    if ( $( this ).prop('checked') ) {
+                        check_index = $ ( this ).val();
+                    }
+				});
+				var submit_flag = true;
+				<?php
+				for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) { ?>
+					if (check_index == <?php echo $selector_index;?>) { <?php
+						if ( $selectors[$selector_index]['selector_type'] == 'popup' ) {
+							if ( $selectors[$selector_index]['popup_type'] == 'mediaalpha' || $selectors[$selector_index]['popup_type'] == 'insuranceclicks' ) { ?>
+								window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=popup&popup=1&selector=' + check_index + '&zipcode=' + $('#adintgr-zipcode').val());
+							<?php } else { ?>
+								window.open('<?php echo $selectors[$selector_index]['popup_url'];?>');
+							<?php }
+						} else if ($selectors[$selector_index]['selector_type'] == '' ) { ?>
+							submit_flag = false;
+						<?php } ?>
+					} <?php
+				}
+				?>
+				return submit_flag;
+			});
             document.body.addEventListener('mouseleave', function(e) {
             if (e.pageY - document.body.scrollTop < 0) {
                 var check_index;
@@ -336,53 +361,53 @@ class WPAdIntgr_Form {
 				var nowDate = new Date();
 				var nowTime = nowDate.getTime();
 				if ( typeof localStorage.getItem("exitpopup_time" + check_index) != 'undefined' ) {
-		<?php
-			for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
-				if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
-					$exit_period = 1000 * 60;
-					if ( $selectors[$selector_index]['main_exit_period'] == 'minute' ) {
-						$exit_period = $exit_period;
-					} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute10' ) {
-						$exit_period = $exit_period * 10;
-					} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute30' ) {
-						$exit_period = $exit_period * 30;
-					} else if ( $selectors[$selector_index]['main_exit_period'] == 'hour' ) {
-						$exit_period = $exit_period * 60;
-					} else if ( $selectors[$selector_index]['main_exit_period'] == 'day' ) {
-						$exit_period = $exit_period * 60 * 24;
-					} else if ( $selectors[$selector_index]['main_exit_period'] == 'week' ) {
-						$exit_period = $exit_period * 60 * 24 * 7;
-					} else {
-						$exit_period = $exit_period * 60 * 24;
-					}
-		?>
-					if ( nowTime - localStorage.getItem("exitpopup_time" + check_index) < <?php echo $exit_period;?> ) {
-						return;
-					} else {
-						localStorage.setItem("exitpopup_time" + check_index, nowTime);
-					}
-		<?php
-					if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
-		?>
-				if (check_index == <?php echo $selector_index; ?>) {
-					setTimeout(() => window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
-				}
-		<?php
-					} else {
-		?>
-				if (check_index == <?php echo $selector_index; ?>) {
-					setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
-				}
-		<?php
-					}
-				}
+					<?php
+					for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
+						if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
+							$exit_period = 1000 * 60;
+							if ( $selectors[$selector_index]['main_exit_period'] == 'minute' ) {
+								$exit_period = $exit_period;
+							} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute10' ) {
+								$exit_period = $exit_period * 10;
+							} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute30' ) {
+								$exit_period = $exit_period * 30;
+							} else if ( $selectors[$selector_index]['main_exit_period'] == 'hour' ) {
+								$exit_period = $exit_period * 60;
+							} else if ( $selectors[$selector_index]['main_exit_period'] == 'day' ) {
+								$exit_period = $exit_period * 60 * 24;
+							} else if ( $selectors[$selector_index]['main_exit_period'] == 'week' ) {
+								$exit_period = $exit_period * 60 * 24 * 7;
+							} else {
+								$exit_period = $exit_period * 60 * 24;
+							}
+							?>
+							if ( nowTime - localStorage.getItem("exitpopup_time" + check_index) < <?php echo $exit_period;?> ) {
+								return;
+							} else {
+								localStorage.setItem("exitpopup_time" + check_index, nowTime);
+							}
+							<?php
+							if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
+							?>
+								if (check_index == <?php echo $selector_index; ?>) {
+									setTimeout(() => window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
+								}
+								<?php
+								} else {
+								?>
+									if (check_index == <?php echo $selector_index; ?>) {
+										setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
+									}
+								<?php
+								}
+							}
+						}
+					?>
+				} else {
+					localStorage.setItem("exitpopup_time" + check_index, nowTime);
+				} 
 			}
-		?>
-			} else {
-				localStorage.setItem("exitpopup_time" + check_index, nowTime);
-			} 
-		}
-		});
+			});
 		});
 		</script>
 		<?php
@@ -449,6 +474,7 @@ class WPAdIntgr_Form {
 			'class' => $class,
 			'enctype' => wpadintgr_enctype_value( $enctype ),
 			'autocomplete' => $autocomplete,
+			'id' => 'wpadintgr-form'
 		);
 		
 		if ( '' !== $id_attr ) {
@@ -459,10 +485,10 @@ class WPAdIntgr_Form {
 			$atts['name'] = $name_attr;
 		}
 		
-		$atts = wpadintgr_format_atts( $atts );		
+		$atts = wpadintgr_format_atts( $atts );
 		$html .= sprintf( '<form %s>', $atts ) . "\n";
 		$html .= $this->form_hidden_fields();
-		$html .= $this->form_elements();		
+		$html .= $this->form_elements();
 		$html .= '</form>';
 		$html .= '</div>';
 		
@@ -519,7 +545,7 @@ class WPAdIntgr_Form {
 			));
 			if ( isset( $props['selectors'] ) ) {
 				if ( is_array( $props['selectors'] ) ) {
-					for ( $index = 0; $indx < count( $props['selectors'] ); $indx++ ) {
+					for ( $index = 0; $index < count( $props['selectors'] ); $index++ ) {
 						$this->pages_id[] = wp_insert_post( array(
 							'post_type' => 'page',
 							'post_name' => $this->get_unit_page(),
