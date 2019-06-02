@@ -16,6 +16,9 @@ Wordpress Plugin(From Scratch)
 
 ## Change Log
 
+1.4 2019/06/02
+	Fix to detect the exit popup page in IE.
+
 1.3 2019/04/12
 	The popup window will open after the user click the button.
     So the main page will open the popup page and leave page at the same time.

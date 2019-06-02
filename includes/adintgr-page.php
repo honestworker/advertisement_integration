@@ -430,7 +430,12 @@ class WPAdIntgr_Page {
         <script type="text/javascript">
         jQuery( function( $ ) {
             document.body.addEventListener('mouseleave', function(e) {
-                if (e.pageY - document.body.scrollTop < 0) {
+                var exit_barrier = 0;
+                var ua = window.navigator.userAgent;
+                if (ua.indexOf('MSIE ') > 0 || ua.indexOf('Trident/') > 0 || ua.indexOf('Edge/') > 0) {
+                    exit_barrier = 15;
+                }
+                if (e.pageY - document.body.scrollTop <= exit_barrier) {
                     if ( typeof localStorage.getItem("leave_exitpopup_time") != 'undefined' ) {
                         var nowDate = new Date();
                         var nowTime = nowDate.getTime();
@@ -495,7 +500,12 @@ class WPAdIntgr_Page {
         <script type="text/javascript">
         jQuery( function( $ ) {
             document.body.addEventListener('mouseleave', function(e) {
-                if (e.pageY - document.body.scrollTop < 0) {
+                var exit_barrier = 0;
+                var ua = window.navigator.userAgent;
+                if (ua.indexOf('MSIE ') > 0 || ua.indexOf('Trident/') > 0 || ua.indexOf('Edge/') > 0) {
+                    exit_barrier = 15;
+                }
+                if (e.pageY - document.body.scrollTop <= exit_barrier) {
                     if ( typeof localStorage.getItem("popup_exitpopup_time") != 'undefined' ) {
                         var nowDate = new Date();
                         var nowTime = nowDate.getTime();

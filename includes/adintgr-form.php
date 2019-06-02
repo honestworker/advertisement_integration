@@ -351,62 +351,67 @@ class WPAdIntgr_Form {
 				return submit_flag;
 			});
             document.body.addEventListener('mouseleave', function(e) {
-            if (e.pageY - document.body.scrollTop < 0) {
-                var check_index;
-				$( '.adintgr_selector' ).each( function ( index, el ) {
-                    if ( $( this ).prop('checked') ) {
-                        check_index = $ ( this ).val();
-                    }
-				});
-				var nowDate = new Date();
-				var nowTime = nowDate.getTime();
-				if ( typeof localStorage.getItem("exitpopup_time" + check_index) != 'undefined' ) {
-					<?php
-					for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
-						if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
-							$exit_period = 1000 * 60;
-							if ( $selectors[$selector_index]['main_exit_period'] == 'minute' ) {
-								$exit_period = $exit_period;
-							} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute10' ) {
-								$exit_period = $exit_period * 10;
-							} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute30' ) {
-								$exit_period = $exit_period * 30;
-							} else if ( $selectors[$selector_index]['main_exit_period'] == 'hour' ) {
-								$exit_period = $exit_period * 60;
-							} else if ( $selectors[$selector_index]['main_exit_period'] == 'day' ) {
-								$exit_period = $exit_period * 60 * 24;
-							} else if ( $selectors[$selector_index]['main_exit_period'] == 'week' ) {
-								$exit_period = $exit_period * 60 * 24 * 7;
-							} else {
-								$exit_period = $exit_period * 60 * 24;
-							}
-							?>
-							if ( nowTime - localStorage.getItem("exitpopup_time" + check_index) < <?php echo $exit_period;?> ) {
-								return;
-							} else {
-								localStorage.setItem("exitpopup_time" + check_index, nowTime);
-							}
-							<?php
-							if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
-							?>
-								if (check_index == <?php echo $selector_index; ?>) {
-									setTimeout(() => window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
+                var exit_barrier = 0;
+                var ua = window.navigator.userAgent;
+                if (ua.indexOf('MSIE ') > 0 || ua.indexOf('Trident/') > 0 || ua.indexOf('Edge/') > 0) {
+                    exit_barrier = 15;
+                }
+                if (e.pageY - document.body.scrollTop <= exit_barrier) {
+					var check_index;
+					$( '.adintgr_selector' ).each( function ( index, el ) {
+						if ( $( this ).prop('checked') ) {
+							check_index = $ ( this ).val();
+						}
+					});
+					var nowDate = new Date();
+					var nowTime = nowDate.getTime();
+					if ( typeof localStorage.getItem("exitpopup_time" + check_index) != 'undefined' ) {
+						<?php
+						for ( $selector_index = 0; $selector_index < count($selectors); $selector_index++ ) {
+							if ( $selectors[$selector_index]['selector_exit_check'] == 'on' ) {
+								$exit_period = 1000 * 60;
+								if ( $selectors[$selector_index]['main_exit_period'] == 'minute' ) {
+									$exit_period = $exit_period;
+								} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute10' ) {
+									$exit_period = $exit_period * 10;
+								} else if ( $selectors[$selector_index]['main_exit_period'] == 'minute30' ) {
+									$exit_period = $exit_period * 30;
+								} else if ( $selectors[$selector_index]['main_exit_period'] == 'hour' ) {
+									$exit_period = $exit_period * 60;
+								} else if ( $selectors[$selector_index]['main_exit_period'] == 'day' ) {
+									$exit_period = $exit_period * 60 * 24;
+								} else if ( $selectors[$selector_index]['main_exit_period'] == 'week' ) {
+									$exit_period = $exit_period * 60 * 24 * 7;
+								} else {
+									$exit_period = $exit_period * 60 * 24;
+								}
+								?>
+								if ( nowTime - localStorage.getItem("exitpopup_time" + check_index) < <?php echo $exit_period;?> ) {
+									return;
+								} else {
+									localStorage.setItem("exitpopup_time" + check_index, nowTime);
 								}
 								<?php
-								} else {
+								if ( $selectors[$selector_index]['main_exit_type'] == '' ) {
 								?>
 									if (check_index == <?php echo $selector_index; ?>) {
-										setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
+										setTimeout(() => window.open('<?php echo $selectors[$selector_index]['main_exit_url'];?>', '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
 									}
-								<?php
+									<?php
+									} else {
+									?>
+										if (check_index == <?php echo $selector_index; ?>) {
+											setTimeout(() => window.open('<?php echo get_permalink($this->pages_id[$selector_index]);?>?action=exit&selector=' + check_index, '_blank', 'width=' + screen.width + ',height=' + screen.height + ','), 1000);
+										}
+									<?php
+									}
 								}
 							}
-						}
-					?>
-				} else {
-					localStorage.setItem("exitpopup_time" + check_index, nowTime);
-				} 
-			}
+						?>
+					} else {
+						localStorage.setItem("exitpopup_time" + check_index, nowTime);
+					} 
+				}
 			});
 		});
 		</script>
